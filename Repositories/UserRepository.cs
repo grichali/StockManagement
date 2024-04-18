@@ -1,13 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using api.Data;
 using api.Dtos.User;
 using api.Interfaces;
 using api.Models;
-using BCrypt.Net;
-using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Repositories
@@ -24,10 +18,16 @@ namespace api.Repositories
 
         public async Task<User> Signup(SignUpDto userdto)
         {
+            var existingUser = await _context.User.FirstOrDefaultAsync(u => u.Email == userdto.Email);
+            if (existingUser != null)
+            {
+                throw new Exception("Email already exists");
+            }
+
             var newuser = new User{
                 Name = userdto.Name,
                 Email = userdto.Email,
-                Password = userdto.Password,
+                Password = HashPassword(userdto.Password),
                 Role  = userdto.Role,
             };
 

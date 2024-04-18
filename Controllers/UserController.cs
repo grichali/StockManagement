@@ -24,9 +24,14 @@ namespace api.Controllers
         [HttpPost("/signup")]
         public async Task<IActionResult> SignUp([FromBody] SignUpDto signUpDto)
         {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var user = await _userRepo.Signup(signUpDto);
             return Ok(user);
         }
+
 
         [HttpPost("/login")]
         public async Task<IActionResult> LogIn([FromBody] LogInDto logInDto)
