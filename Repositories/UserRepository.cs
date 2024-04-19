@@ -46,15 +46,7 @@ namespace api.Repositories
             return false;
         }
 
-        private string HashPassword(string password)
-        {
-            return BCrypt.Net.BCrypt.HashPassword(password);
-        }
 
-        private bool VerifyPassword(string password, string hashedPassword)
-        {
-            return BCrypt.Net.BCrypt.Verify(password, hashedPassword);
-        }
 
         public async Task<List<User>> GetAll()
         {
@@ -70,5 +62,52 @@ namespace api.Repositories
             }
             return user;
         }
+        public async Task<User?> Delete(int id, int userid)
+        {
+            var user = await _context.User.FindAsync(id);
+            if (user == null)
+            {
+                return null ;
+            }
+
+            if(IsBoss(userid)){
+                _context.User.Remove(user);
+                _context.SaveChanges();
+                return user;
+            }
+
+            return null ;
+
+        }
+        
+
+        private string HashPassword(string password)
+        {
+            return BCrypt.Net.BCrypt.HashPassword(password);
+        }
+
+        private bool VerifyPassword(string password, string hashedPassword)
+        {
+            return BCrypt.Net.BCrypt.Verify(password, hashedPassword);
+        }
+
+        private bool IsBoss(int id)
+        {
+            var user = _context.User.Find(id);
+
+            if(user == null)
+            {
+                return false;
+            }
+            else if(user.Role.Equals("Boss"))
+            {
+                return true;
+            }else{
+                return false;
+            }
+        }
+
+
+
     }
 }
