@@ -22,7 +22,7 @@ namespace api.Repositories
 
         public async Task<List<Order>> GetOrdersAll()
         {
-            var orders = await _context.Order.ToListAsync();
+            var orders = await _context.Order.Include(c => c.OrderItems).ToListAsync();
 
             return orders;
         }
@@ -45,15 +45,19 @@ namespace api.Repositories
 
         public async Task<Order?> GetOrderById(int id)
         {
-            var order = await _context.Order.FindAsync(id);
+            var order = await _context.Order
+                .Include(c => c.OrderItems)
+                    .ThenInclude(o => o.Product)
+                .FirstOrDefaultAsync(s => s.Id == id);
 
-            if(order != null)
+            if (order != null)
             {
                 return order;
             }
 
             return null;
         }
+
 
         public async Task<List<Order>> GetOrdersByUser(int userId)
         {
@@ -93,7 +97,9 @@ namespace api.Repositories
                 var orderitem = new OrderItems{
                     ProductId = product.Id,
                     Quantity = item.Quantity,
-                    OrderId = order.Id
+                    OrderId = order.Id,
+                    Product = product 
+
                 };
 
                 _context.OrderItems.Add(orderitem);
