@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using api.Models;
+using api.Models ;
 
 namespace api.Dtos.User
 {
@@ -18,6 +18,6 @@ namespace api.Dtos.User
 
         public string Role { get; set; } = string.Empty;
 
-        public List<Order> Orders { get; set; } = new List<Order>();
+        public List<api.Models.Order> Orders { get; set; } = new List<api.Models.Order>();
     }
 }
