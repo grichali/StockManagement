@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 using api.Data;
 using api.Dtos.Order;
 using api.Interfaces;
+using api.Mappers;
 using api.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Repositories
@@ -47,7 +49,6 @@ namespace api.Repositories
         {
             var order = await _context.Order
                 .Include(c => c.OrderItems)
-                    .ThenInclude(o => o.Product)
                 .FirstOrDefaultAsync(s => s.Id == id);
 
             if (order != null)
@@ -70,9 +71,14 @@ namespace api.Repositories
 
           public async Task<Order?> CreateOrder(CreateOrderDto orderDto)
         {
+            var user = _context.User.Find(orderDto.UserId);
+            if (user == null)
+            {
+                throw new Exception("User not found");
+            }
             var order = new Order{
                 Date = DateTime.Now,
-                UserId = orderDto.UserId,
+                User = user,
             };
 
             _context.Order.Add(order);
@@ -84,7 +90,8 @@ namespace api.Repositories
                 var product = await _context.Product.FindAsync(item.ProductId);
 
                 if(product == null){
-                    return null; 
+                    Console.WriteLine($"no prod");
+                    throw new Exception("Product not found"); 
                 }
 
                Console.WriteLine($"hada lproduct : {product.Name}");
@@ -95,11 +102,9 @@ namespace api.Repositories
 
 
                 var orderitem = new OrderItems{
-                    ProductId = product.Id,
                     Quantity = item.Quantity,
-                    OrderId = order.Id,
-                    Product = product 
-
+                    Product = product,
+                    Order = order,
                 };
 
                 _context.OrderItems.Add(orderitem);

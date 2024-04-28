@@ -62,12 +62,12 @@ namespace api.Repositories
             }
             return user;
         }
-        public async Task<User?> Delete(int id, int userid)
+        public async Task<User?> Delete(int userid, int id)
         {
             var user = await _context.User.FindAsync(id);
             if (user == null)
             {
-                return null ;
+                throw new Exception("User not found");
             }
 
             if(IsBoss(userid)){
@@ -97,7 +97,7 @@ namespace api.Repositories
 
             if(user == null)
             {
-                return false;
+                throw new Exception("User not found");
             }
             else if(user.Role.Equals("Boss"))
             {

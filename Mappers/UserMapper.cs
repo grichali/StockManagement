@@ -14,8 +14,7 @@ namespace api.Mappers
                 Id = user.Id,
                 Name = user.Name,
                 Email = user.Email,
-                Role  = user.Role,
-                Orders = user.Orders.ToList()
+                Role   = user.Role,
             };
         }
     }

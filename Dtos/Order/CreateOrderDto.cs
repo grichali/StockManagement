@@ -11,6 +11,6 @@ namespace api.Dtos.Order
     {        
         public int UserId { get; set; }
 
-        public List<CreateOrderItemDTO> Items { get; set; }
+        public List<CreateOrderItemDTO> Items { get; set; } = new List<CreateOrderItemDTO>();
     }
 }

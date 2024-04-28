@@ -5,11 +5,12 @@ using api.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using api.Mappers;
 
 namespace api.Controllers
 {
     [ApiController]
-    [Route("api/orders")]
+    [Route("api/[controller]")]
     public class OrderController : ControllerBase
     {
         private readonly IOrderRepository _orderRepo;
@@ -19,14 +20,14 @@ namespace api.Controllers
             _orderRepo = orderRepository;
         }
 
-        [HttpGet]
+        [HttpGet("GetAll")]
         public async Task<IActionResult> GetAllOrders()
         {
             var orders = await _orderRepo.GetOrdersAll();
-            return Ok(orders);
+            return Ok(orders.Select( e => e.ToOrderDto()));
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("getbyid/{id}")]
         public async Task<IActionResult> GetOrderById(int id)
         {
             var order = await _orderRepo.GetOrderById(id);
@@ -34,10 +35,10 @@ namespace api.Controllers
             {
                 return NotFound($"Order with ID {id} not found");
             }
-            return Ok(order);
+            return Ok(order.ToOrderDto());
         }
 
-        [HttpPost]
+        [HttpPost("Create")]
         public async Task<IActionResult> CreateOrder([FromBody] CreateOrderDto orderDto)
         {
             if (!ModelState.IsValid)
@@ -51,10 +52,10 @@ namespace api.Controllers
                 return BadRequest("Failed to create order");
             }
 
-            return CreatedAtAction(nameof(GetOrderById), new { id = createdOrder.Id }, createdOrder);
+            return Ok(createdOrder.ToOrderDto());
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteOrder(int id)
         {
             var deletedOrder = await _orderRepo.Delete(id);

@@ -108,11 +108,11 @@ namespace api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<float>("Price")
+                        .HasColumnType("real");
+
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
-
-                    b.Property<float>("price")
-                        .HasColumnType("real");
 
                     b.HasKey("Id");
 

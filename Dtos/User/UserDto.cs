@@ -18,6 +18,5 @@ namespace api.Dtos.User
 
         public string Role { get; set; } = string.Empty;
 
-        public List<api.Models.Order> Orders { get; set; } = new List<api.Models.Order>();
     }
 }

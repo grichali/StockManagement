@@ -44,7 +44,7 @@ namespace api.Repositories
             var category = await _context.Category.FindAsync(id);
             if (category == null)
             {
-                return null;
+                throw new Exception("Category not found");
             }
 
             if (!string.IsNullOrWhiteSpace(categoryDto.Name))

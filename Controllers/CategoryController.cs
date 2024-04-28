@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using api.Dtos.Category;
 using api.Interfaces;
+using api.Mappers;
 using api.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,7 +20,7 @@ namespace api.Controllers
             _categoryRepo = categoryRepository ?? throw new ArgumentNullException(nameof(categoryRepository));
         }
 
-        [HttpPost]
+        [HttpPost("Create")]
         public async Task<IActionResult> CreateCategory([FromBody] CreateCategoryDto categoryDto)
         {
             if (!ModelState.IsValid || categoryDto == null)
@@ -30,21 +31,21 @@ namespace api.Controllers
             try
             {
                 var createdCategory = await _categoryRepo.CreateCategory(categoryDto);
-                return Ok(createdCategory);
+                return Ok(createdCategory.ToCategoryDto());
             }
             catch (Exception ex)
             {
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
-
-        [HttpGet]
+ 
+        [HttpGet("getall")]
         public async Task<IActionResult> GetAllCategories()
         {
             try
             {
                 var categories = await _categoryRepo.GetAllCategories();
-                return Ok(categories);
+                return Ok(categories.Select(x => x.ToCategoryDto()));
             }
             catch (Exception ex)
             {
@@ -67,7 +68,7 @@ namespace api.Controllers
                 {
                     return NotFound("Category not found.");
                 }
-                return Ok(updatedCategory);
+                return Ok(updatedCategory.ToCategoryDto());
             }
             catch (Exception ex)
             {

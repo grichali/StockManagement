@@ -12,8 +12,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
 {
+    [Route("api/[controller]")]
     [ApiController]
-    [Route("[Controller]")]
     public class UserController : ControllerBase
     {
         private readonly IUserRepository _userRepo;
@@ -23,14 +23,14 @@ namespace api.Controllers
             _userRepo = userRepo;
         }
 
-        [HttpPost("/signup")]
+        [HttpPost("signup")]
         public async Task<IActionResult> SignUp([FromBody] SignUpDto signUpDto)
         {
             var user = await _userRepo.Signup(signUpDto);
             return Ok(user.ToUseDto());
         }
 
-        [HttpPost("/login")]
+        [HttpPost("login")]
         public async Task<IActionResult> LogIn([FromBody] LogInDto logInDto)
         {
             var login = await _userRepo.LogIn(logInDto);
@@ -42,7 +42,7 @@ namespace api.Controllers
             return Ok(login);
         }
 
-        [HttpGet("/GetAll")]
+        [HttpGet("GetAll")]
         public async Task<IActionResult> GelAll()
         {
             var users =  await _userRepo.GetAll();
@@ -50,7 +50,7 @@ namespace api.Controllers
         }
 
 
-        [HttpGet("/GetById/{id}")]
+        [HttpGet("GetById/{id}")]
         public async Task<IActionResult> GetById([FromRoute]int id)
         {
             var user = await _userRepo.GetById(id);
@@ -64,7 +64,7 @@ namespace api.Controllers
 
         [HttpDelete("{userid}/{id}")]
         public async Task<IActionResult> DeleteById( [FromRoute] int userid, [FromRoute]int id){
-            var user = await _userRepo.Delete(id, userid);
+            var user = await _userRepo.Delete(userid, id);
             if(user == null)
             {
                 return BadRequest();
