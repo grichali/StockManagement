@@ -18,5 +18,7 @@ namespace api.Mappers
                 amount = orderItems.Quantity * orderItems.Product.Price,
             };
         }
+
+        
     }
 }

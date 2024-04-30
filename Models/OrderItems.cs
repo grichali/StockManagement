@@ -17,7 +17,7 @@ namespace api.Models
 // one to many with product 
         public int? ProductId { get; set; }
 
-        public Product? Product { get; set; }
+        public Product Product { get; set; }
 // end
 
 // one to many with orders 

@@ -24,8 +24,16 @@ namespace api.Repositories
 
         public async Task<List<Order>> GetOrdersAll()
         {
-            var orders = await _context.Order.Include(c => c.OrderItems).ToListAsync();
+            var orders = await _context.Order.Include(u => u.User).Include(e => e.OrderItems).ThenInclude(p => p.Product).ToListAsync();
 
+            foreach (var order in orders)
+            {
+            Console.WriteLine($"Order ID: {order.Id}");
+            foreach (var orderItem in order.OrderItems)
+            {
+                Console.WriteLine($"OrderItems: {orderItem.Quantity}");
+            }
+            }
             return orders;
         }
 
@@ -93,6 +101,12 @@ namespace api.Repositories
                     Console.WriteLine($"no prod");
                     throw new Exception("Product not found"); 
                 }
+
+                if(item.Quantity >= product.Quantity)
+                {
+                    throw new Exception("Not enough Products");
+                }
+
 
                Console.WriteLine($"hada lproduct : {product.Name}");
 

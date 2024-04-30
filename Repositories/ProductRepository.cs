@@ -19,13 +19,18 @@ namespace api.Repositories
         {
             _context = context;
         }
-        public async Task<Product?> createProduct(CreateProductDto productDto)
+        public async Task<Product> createProduct(CreateProductDto productDto)
         {
+            var category = await _context.Category.FindAsync(productDto.CategoryId);
+            if (category == null)
+            {
+                throw new Exception("Category not found");
+            }
             var product = new Product{
                 Name  = productDto.Name,
                 Price = productDto.Price,
                 Quantity = productDto.Quantity,
-                CategoryId = productDto.CategoryId,
+                Category = category,
             };
 
             await _context.Product.AddAsync(product);
@@ -34,6 +39,48 @@ namespace api.Repositories
 
         }
 
+        public async Task<Product> updateProduct(int id , UpdateProductDto updateProductDto)
+        {
+
+            var product = await _context.Product.FindAsync(id);
+
+            if (product == null)
+            {
+                throw new Exception("Product not found");
+            }
+
+            
+            // if(!string.IsNullOrWhiteSpace(updateProductDto.Name))
+            // {
+            //     product.Name = updateProductDto.Name;
+            // }
+
+            // if(!float.IsNaN(updateProductDto.Price))
+            // {
+            //     product.Price = updateProductDto.Price;
+            // }
+
+            // if(!float.IsNaN(updateProductDto.Quantity))
+            // {
+            //     product.Quantity = updateProductDto.Quantity;
+            // }
+
+            // if(updateProductDto.CategoryId != 0)
+            // {
+            //     var category = await _context.Category.FindAsync(updateProductDto.CategoryId);
+            //     if (category == null)
+            //     {
+            //         throw new Exception("Category not found");
+            //     }
+            //     product.Category = category;
+            // }
+            // if (_context.ChangeTracker.HasChanges())
+            // {
+            //     await _context.SaveChangesAsync();
+            // }
+
+            return product;
+        }
         public async Task<List<Product>> getAllProducts()
         {
             var products = await _context.Product.Include(c => c.Category).ToListAsync();

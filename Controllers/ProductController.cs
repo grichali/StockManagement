@@ -26,7 +26,7 @@ namespace api.Controllers
         public async Task<IActionResult> createProduct([FromBody] CreateProductDto productDto)
         {
             var product = await _productRepo.createProduct(productDto);
-            return Ok(product);
+            return Ok(product.ToProductDto());
         }
 
 
@@ -35,5 +35,12 @@ namespace api.Controllers
             var products = await _productRepo.getAllProducts();
             return Ok(products.Select(x=> x.ToProductDto()));
         }
+
+        [HttpPut("update/")]
+        public async Task<IActionResult> updateProduct([FromRoute] int id ,[FromBody] UpdateProductDto updateProductDto)
+        {
+            var product = await _productRepo.updateProduct(id, updateProductDto);
+            return Ok(product.ToProductDto());
+        }
     }
-}
+} 
