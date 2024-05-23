@@ -15,9 +15,11 @@ namespace api.Extensions
             return user.Claims.SingleOrDefault(x => x.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname")).Value;
         }
 
+
+
         public static async Task<bool> IfEmailExists(this string email, UserManager<User> userManager){
             var user = await userManager.FindByEmailAsync(email);
             return user != null ; 
-        } 
+        }
     }
 }
