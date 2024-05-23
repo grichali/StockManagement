@@ -15,7 +15,7 @@ namespace api.Interfaces
 
         Task<Order?> GetOrderById(int id);
 
-        Task<List<Order>> GetOrdersByUser(int id);
+        Task<List<Order>> GetOrdersByUser(string id);
 
         Task<Order?> Delete(int id);
     }

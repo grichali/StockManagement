@@ -5,6 +5,7 @@ using api.Dtos.Category;
 using api.Interfaces;
 using api.Mappers;
 using api.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
@@ -21,6 +22,7 @@ namespace api.Controllers
         }
 
         [HttpPost("Create")]
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> CreateCategory([FromBody] CreateCategoryDto categoryDto)
         {
             if (!ModelState.IsValid || categoryDto == null)
@@ -40,6 +42,7 @@ namespace api.Controllers
         }
  
         [HttpGet("getall")]
+        [Authorize(Roles ="Admin, User")]
         public async Task<IActionResult> GetAllCategories()
         {
             try
@@ -54,6 +57,7 @@ namespace api.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> UpdateCategory(int id, [FromBody] UpdateCategoryDto categoryDto)
         {
             if (!ModelState.IsValid || categoryDto == null)
@@ -75,5 +79,18 @@ namespace api.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+
+        // [HttpDelete("{id}")]
+        // public async Task<IActionResult> DeleteCategory(int id )
+        // {
+        //     Category? category = await _categoryRepo.DeleteCategory(id);
+        //     if(category != null)
+        //     {
+        //         Ok(category);
+        //     }
+
+        //     return NotFound("Category Not Found");
+
+        // }
     }
 }

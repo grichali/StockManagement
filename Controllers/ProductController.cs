@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using api.Dtos.Product;
 using api.Interfaces;
 using api.Mappers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
@@ -16,6 +17,7 @@ namespace api.Controllers
     {
         private readonly IProductRepository _productRepo;
 
+        
         public ProductController(IProductRepository productRepo)
         {
             _productRepo = productRepo;
@@ -23,6 +25,7 @@ namespace api.Controllers
 
 
         [HttpPost]
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> createProduct([FromBody] CreateProductDto productDto)
         {
             var product = await _productRepo.createProduct(productDto);
@@ -31,12 +34,14 @@ namespace api.Controllers
 
 
         [HttpGet]
+        [Authorize(Roles ="Admin, User")]
         public async Task<IActionResult> getAllProduct(){
             var products = await _productRepo.getAllProducts();
             return Ok(products.Select(x=> x.ToProductDto()));
         }
 
         [HttpPut("update/")]
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> updateProduct([FromRoute] int id ,[FromBody] UpdateProductDto updateProductDto)
         {
             var product = await _productRepo.updateProduct(id, updateProductDto);

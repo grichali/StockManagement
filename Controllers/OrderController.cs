@@ -25,7 +25,7 @@ namespace api.Controllers
         }
 
         [HttpGet("GetAll")]
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllOrders()
         {
             var orders = await _orderRepo.GetOrdersAll();
@@ -33,7 +33,7 @@ namespace api.Controllers
         }
 
         [HttpGet("getbyid/{id}")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetOrderById(int id)
         {
             var order = await _orderRepo.GetOrderById(id);
@@ -45,29 +45,33 @@ namespace api.Controllers
         }
 
         [HttpPost("Create")]
-        [Authorize]
+        [Authorize(Roles = "Admin, User")]
         public async Task<IActionResult> CreateOrder([FromBody] CreateOrderDto orderDto)
         {
             string username = User.GetUsername();
             User user = await _userManager.FindByNameAsync(username);
-            
+            if(user == null)
+            {
+                return BadRequest("User Not Found");
+            }
             orderDto.UserId=user.Id;
-            return Ok(orderDto);
-            // if (!ModelState.IsValid)
-            // {
-            //     return BadRequest(ModelState);
-            // }
 
-            // var createdOrder = await _orderRepo.CreateOrder(orderDto);
-            // if (createdOrder == null)
-            // {
-            //     return BadRequest("Failed to create order");
-            // }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-            // return Ok(createdOrder.ToOrderDto());
+            var createdOrder = await _orderRepo.CreateOrder(orderDto);
+            if (createdOrder == null)
+            {
+                return BadRequest("Failed to create order");
+            }
+
+            return Ok(createdOrder.ToOrderDto());
         }
 
         [HttpDelete("delete/{id}")]
+        [Authorize(Roles = "Admin,User")]
         public async Task<IActionResult> DeleteOrder(int id)
         {
             var deletedOrder = await _orderRepo.Delete(id);
@@ -77,6 +81,26 @@ namespace api.Controllers
             }
 
             return Ok(deletedOrder);
+        }
+
+        [HttpGet("getuserorders")]
+        [Authorize(Roles = "Admin,User")]
+        public async Task<IActionResult> GetOrdersByUSer()
+        {
+
+            string username = User.GetUsername();
+            User user = await _userManager.FindByNameAsync(username);
+            if(user == null)
+            {
+                return BadRequest("User Not Found");
+            }
+            string id = user.Id;
+            var order = await _orderRepo.GetOrdersByUser(id);
+            if (order == null)
+            {
+                return NotFound($"Order with ID {id} not found");
+            }
+            return Ok(order.Select(x => x.ToOrderDto()));
         }
     }
 }

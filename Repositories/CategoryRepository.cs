@@ -2,6 +2,7 @@ using api.Data;
 using api.Dtos.Category;
 using api.Interfaces;
 using api.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Repositories
@@ -63,6 +64,19 @@ namespace api.Repositories
             }
 
             return category;
+        }
+
+        public async Task<Category?> DeleteCategory(int id)
+        {
+            Category category = await _context.Category.FindAsync(id);
+
+            if(category != null)
+            {
+                _context.Category.Remove(category);
+                await _context.SaveChangesAsync();
+                return category;
+            }
+            return null;
         }
     }
 }

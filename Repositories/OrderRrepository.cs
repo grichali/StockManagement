@@ -25,15 +25,6 @@ namespace api.Repositories
         public async Task<List<Order>> GetOrdersAll()
         {
             var orders = await _context.Order.Include(u => u.User).Include(e => e.OrderItems).ThenInclude(p => p.Product).ToListAsync();
-
-            foreach (var order in orders)
-            {
-            Console.WriteLine($"Order ID: {order.Id}");
-            foreach (var orderItem in order.OrderItems)
-            {
-                Console.WriteLine($"OrderItems: {orderItem.Quantity}");
-            }
-            }
             return orders;
         }
 
@@ -56,7 +47,7 @@ namespace api.Repositories
         public async Task<Order?> GetOrderById(int id)
         {
             var order = await _context.Order
-                .Include(c => c.OrderItems)
+                .Include(u => u.User).Include(e => e.OrderItems).ThenInclude(p => p.Product)
                 .FirstOrDefaultAsync(s => s.Id == id);
 
             if (order != null)
@@ -68,26 +59,21 @@ namespace api.Repositories
         }
 
 
-        public async Task<List<Order>> GetOrdersByUser(int userId)
+        public async Task<List<Order>> GetOrdersByUser(string userId)
         {
             var orders = await _context.Order
-                .Where(o => o.UserId == userId)
+                .Where(o => o.UserId.Equals(userId))
+                .Include(u => u.User).Include(e => e.OrderItems).ThenInclude(p => p.Product)
                 .ToListAsync();
 
             return orders;
-        }
+        } 
 
           public async Task<Order?> CreateOrder(CreateOrderDto orderDto)
         {
-            // var user = _context.User.Find(orderDto.UserId);
-            var user = new User();
-            if (user == null)
-            {
-                throw new Exception("User not found");
-            }
             var order = new Order{
                 Date = DateTime.Now,
-                User = user,
+                UserId = orderDto.UserId,
             };
 
             _context.Order.Add(order);
@@ -103,13 +89,13 @@ namespace api.Repositories
                     throw new Exception("Product not found"); 
                 }
 
-                if(item.Quantity >= product.Quantity)
+                if(item.Quantity > product.Quantity)
                 {
-                    throw new Exception("Not enough Products");
+                    throw new Exception("No enough Products");
                 }
 
 
-               Console.WriteLine($"hada lproduct : {product.Name}");
+               Console.WriteLine($"This is product : {product.Name}");
 
 
                Console.WriteLine($"Order Id is : {order.Id}");
@@ -119,6 +105,7 @@ namespace api.Repositories
                 var orderitem = new OrderItems{
                     Quantity = item.Quantity,
                     Product = product,
+                    ProductId = product.Id,
                     Order = order,
                 };
 
