@@ -9,7 +9,7 @@ namespace api.Dtos.Order
 {
     public class CreateOrderDto
     {        
-        public int UserId { get; set; }
+        public string UserId { get; set; }
 
         public List<CreateOrderItemDTO> Items { get; set; } = new List<CreateOrderItemDTO>();
     }

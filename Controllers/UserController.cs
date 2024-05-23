@@ -4,11 +4,15 @@ using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 using api.Dtos.User;
+using api.Extensions;
 using api.Interfaces;
 using api.Mappers;
 using api.Models;
 using api.Repositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace api.Controllers
 {
@@ -16,62 +20,128 @@ namespace api.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IUserRepository _userRepo;
 
-        public UserController(IUserRepository userRepo)
+        private readonly UserManager<User> _userManager;
+        private readonly ITokenService _tokenService;
+        private readonly SignInManager<User> _signInManager;
+        public UserController(UserManager<User> userManager, ITokenService tokenService, SignInManager<User> signInManager)
         {
-            _userRepo = userRepo;
+            _userManager = userManager;
+            _tokenService = tokenService;
+            _signInManager = signInManager;
         }
 
-        [HttpPost("signup")]
-        public async Task<IActionResult> SignUp([FromBody] SignUpDto signUpDto)
+        [HttpPost("user/signup")]
+        public async Task<IActionResult> UserSignUp([FromBody] SignUpDto signUpDto)
         {
-            var user = await _userRepo.Signup(signUpDto);
-            return Ok(user.ToUseDto());
+                try{
+                    if(!ModelState.IsValid){
+                        return BadRequest(ModelState);
+                    }
+                    if(await signUpDto.Email.IfEmailExists(_userManager)){
+                        return BadRequest("Email already exists");
+                    }
+                    var user = new User{
+                        UserName = signUpDto.UserName,
+                        Email = signUpDto.Email
+                    };
+
+                    var createduser = await _userManager.CreateAsync(user, signUpDto.Password);
+                    if(createduser.Succeeded)
+                    {
+                        var roleResult = await _userManager.AddToRoleAsync(user, "User");
+                        if(roleResult.Succeeded)
+                        {
+                            var roles = await _userManager.GetRolesAsync(user);
+                            return Ok(new UserDto{
+                                Id = user.Id,
+                                UserName = user.UserName,
+                                Email = user.Email,
+                                Token = _tokenService.CreateToken(user, roles)
+                            });
+                        }else{
+                            return StatusCode(500, "Error while assigning role");
+                        }
+                    }else{
+                            return StatusCode(500, createduser.Errors);
+                        }
+                }catch(Exception e )
+                {
+                    return StatusCode(500, "Error");
+                }
         }
 
-        [HttpPost("login")]
+        [HttpPost("admin/signup")]
+        public async Task<IActionResult> AdminSignUp([FromBody] SignUpDto signUpDto)
+        {
+                try{
+                    if(!ModelState.IsValid){
+                        return BadRequest(ModelState);
+                    }
+                    if(await signUpDto.Email.IfEmailExists(_userManager)){
+                        return BadRequest("Email already exists");
+                    }
+                    var user = new User{
+                        UserName = signUpDto.UserName,
+                        Email = signUpDto.Email
+                    };
+
+                    var createduser = await _userManager.CreateAsync(user, signUpDto.Password);
+                    if(createduser.Succeeded)
+                    {
+                        var roleResult = await _userManager.AddToRoleAsync(user, "Admin");
+                        if(roleResult.Succeeded)
+                        {
+                            var roles = await _userManager.GetRolesAsync(user);
+                            return Ok(new UserDto{
+                                Id = user.Id,
+                                UserName = user.UserName,
+                                Email = user.Email,
+                                Token = _tokenService.CreateToken(user, roles)
+                            });
+                        }else{
+                            return StatusCode(500, "Error while assigning role");
+                        }
+                    }else{
+                            return StatusCode(500, createduser.Errors);
+                        }
+                }catch(Exception e )
+                {
+                    return StatusCode(500, "Error");
+                }
+        }
+
+        [HttpPost("Login")]
         public async Task<IActionResult> LogIn([FromBody] LogInDto logInDto)
         {
-            var login = await _userRepo.LogIn(logInDto);
-            if (login == false)
+            if(!ModelState.IsValid)
             {
-                return NotFound();
+                return BadRequest(ModelState);
             }
-
-            return Ok(login);
-        }
-
-        [HttpGet("GetAll")]
-        public async Task<IActionResult> GelAll()
-        {
-            var users =  await _userRepo.GetAll();
-            return Ok(users.Select(s => s.ToUseDto()));
-        }
-
-
-        [HttpGet("GetById/{id}")]
-        public async Task<IActionResult> GetById([FromRoute]int id)
-        {
-            var user = await _userRepo.GetById(id);
-            if (user == null)
-            {
-                return NotFound() ;
-            }
-            return Ok(user.ToUseDto());
-        }
-
-
-        [HttpDelete("{userid}/{id}")]
-        public async Task<IActionResult> DeleteById( [FromRoute] int userid, [FromRoute]int id){
-            var user = await _userRepo.Delete(userid, id);
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == logInDto.UserName);
             if(user == null)
             {
-                return BadRequest();
+                return Unauthorized("Incorrect password or username");
             }
 
-            return Ok(user.ToUseDto());
+            var result = await _signInManager.CheckPasswordSignInAsync(user, logInDto.Password, false);
 
+            if(!result.Succeeded)
+            {
+                return Unauthorized("Incorrect password or username");
+            }
+
+            var roles = await _userManager.GetRolesAsync(user);
+            return Ok(
+                new UserDto
+                {
+                    Id = user.Id,
+                    UserName = user.UserName,
+                    Email = user.Email,
+                    Token = _tokenService.CreateToken(user, roles)    
+                }
+            );
         }
+       
     }
 }

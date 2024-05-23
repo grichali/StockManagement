@@ -22,7 +22,7 @@ namespace api.Models
 // one to many with category
         public int? CategoryId { get; set; }
         
-        public Category?  Category { get; set; }
+        public Category  Category { get; set; }
 //end 
 
 // many to one with orderitems

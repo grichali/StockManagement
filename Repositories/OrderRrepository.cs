@@ -79,7 +79,8 @@ namespace api.Repositories
 
           public async Task<Order?> CreateOrder(CreateOrderDto orderDto)
         {
-            var user = _context.User.Find(orderDto.UserId);
+            // var user = _context.User.Find(orderDto.UserId);
+            var user = new User();
             if (user == null)
             {
                 throw new Exception("User not found");

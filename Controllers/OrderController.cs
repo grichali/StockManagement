@@ -6,6 +6,9 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using api.Mappers;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using api.Extensions;
 
 namespace api.Controllers
 {
@@ -14,13 +17,15 @@ namespace api.Controllers
     public class OrderController : ControllerBase
     {
         private readonly IOrderRepository _orderRepo;
-
-        public OrderController(IOrderRepository orderRepository)
+        private readonly UserManager<User> _userManager;
+        public OrderController(IOrderRepository orderRepository, UserManager<User> userManager)
         {
             _orderRepo = orderRepository;
+            _userManager = userManager;
         }
 
         [HttpGet("GetAll")]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> GetAllOrders()
         {
             var orders = await _orderRepo.GetOrdersAll();
@@ -28,6 +33,7 @@ namespace api.Controllers
         }
 
         [HttpGet("getbyid/{id}")]
+        [Authorize]
         public async Task<IActionResult> GetOrderById(int id)
         {
             var order = await _orderRepo.GetOrderById(id);
@@ -39,20 +45,26 @@ namespace api.Controllers
         }
 
         [HttpPost("Create")]
+        [Authorize]
         public async Task<IActionResult> CreateOrder([FromBody] CreateOrderDto orderDto)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            string username = User.GetUsername();
+            User user = await _userManager.FindByNameAsync(username);
+            
+            orderDto.UserId=user.Id;
+            return Ok(orderDto);
+            // if (!ModelState.IsValid)
+            // {
+            //     return BadRequest(ModelState);
+            // }
 
-            var createdOrder = await _orderRepo.CreateOrder(orderDto);
-            if (createdOrder == null)
-            {
-                return BadRequest("Failed to create order");
-            }
+            // var createdOrder = await _orderRepo.CreateOrder(orderDto);
+            // if (createdOrder == null)
+            // {
+            //     return BadRequest("Failed to create order");
+            // }
 
-            return Ok(createdOrder.ToOrderDto());
+            // return Ok(createdOrder.ToOrderDto());
         }
 
         [HttpDelete("delete/{id}")]
