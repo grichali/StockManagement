@@ -24,11 +24,15 @@ namespace api.Controllers
         private readonly UserManager<User> _userManager;
         private readonly ITokenService _tokenService;
         private readonly SignInManager<User> _signInManager;
-        public UserController(UserManager<User> userManager, ITokenService tokenService, SignInManager<User> signInManager)
+        private readonly IEmailVerificationService _emailVerificationService;
+
+        public UserController(UserManager<User> userManager, ITokenService tokenService, SignInManager<User> signInManager
+        ,IEmailVerificationService emailVerificationService)
         {
             _userManager = userManager;
             _tokenService = tokenService;
             _signInManager = signInManager;
+            _emailVerificationService = emailVerificationService;
         }
 
         [HttpPost("user/signup")]
@@ -142,6 +146,52 @@ namespace api.Controllers
                 }
             );
         }
-       
-    }
+    
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgotPassword(string email)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                return BadRequest("Email is required.");
+            }
+
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                return NotFound("Email incorrect");
+            }
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+            await _emailVerificationService.SendEmailAsync(user.Email, "Reset Password", $"Your token is : <b>{token}</b>");
+
+            return Ok("Password reset link has been sent to your email." + token);
+        }
+
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword(ResetPasswordDto resetPasswordDto)
+        {
+            if (string.IsNullOrWhiteSpace(resetPasswordDto.email) || string.IsNullOrWhiteSpace(resetPasswordDto.token) || string.IsNullOrWhiteSpace(resetPasswordDto.newPassword))
+            {
+                return BadRequest("Email, token, and new password are required.");
+            }
+
+            var user = await _userManager.FindByEmailAsync(resetPasswordDto.email);
+            if (user == null)
+            {
+                return BadRequest("Invalid request.");
+            }
+
+            var result = await _userManager.ResetPasswordAsync(user, resetPasswordDto.token, resetPasswordDto.newPassword);
+            if (result.Succeeded)
+            {
+                return Ok("Password has been reset !");
+            }
+
+            return BadRequest("Invalid Or Expired Token");
+        }
+
+
+        
+        }
 }

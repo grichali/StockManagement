@@ -25,7 +25,7 @@ namespace api.Controllers
 
 
         [HttpPost]
-        [Authorize(Roles ="Admin")]
+        // [Authorize(Roles ="Admin")]
         public async Task<IActionResult> createProduct([FromBody] CreateProductDto productDto)
         {
             var product = await _productRepo.createProduct(productDto);

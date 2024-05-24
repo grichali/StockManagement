@@ -140,3 +140,5 @@ C:\Users\ali\Desktop\S4\dotnet\stockmanagment\api\bin\Debug\net9.0\Newtonsoft.Js
 C:\Users\ali\Desktop\S4\dotnet\stockmanagment\api\obj\Debug\net9.0\api.sourcelink.json
 C:\Users\ali\Desktop\S4\dotnet\stockmanagment\api\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Users\ali\Desktop\S4\dotnet\stockmanagment\api\bin\Debug\net9.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+C:\Users\ali\Desktop\S4\dotnet\stockmanagment\api\bin\Debug\net9.0\SendGrid.dll
+C:\Users\ali\Desktop\S4\dotnet\stockmanagment\api\bin\Debug\net9.0\StarkbankEcdsa.dll

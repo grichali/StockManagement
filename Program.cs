@@ -61,9 +61,11 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>{
 builder.Services.AddIdentity<User, IdentityRole>(options => {
     options.Password.RequireDigit = true;
     options.Password.RequiredLength = 10;
+    
 })
 
-.AddEntityFrameworkStores<ApplicationDbContext>();
+.AddEntityFrameworkStores<ApplicationDbContext>()
+.AddDefaultTokenProviders();
 
 builder.Services.AddAuthentication(options => {
     options.DefaultAuthenticateScheme =
@@ -91,6 +93,7 @@ builder.Services.AddScoped<IOrderRepository,OrderRrepository>();
 builder.Services.AddScoped<ICategoryRepository,CategoryRepository>();
 builder.Services.AddScoped<IProductRepository,ProductRepository>();
 builder.Services.AddScoped<ITokenService,TokenService>();
+builder.Services.AddScoped<IEmailVerificationService,EmailVerificationService>();
 
 var app = builder.Build();
 

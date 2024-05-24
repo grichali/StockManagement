@@ -16,8 +16,9 @@ namespace api.Models
 
         public float Price { get; set; }
 
-
+        public float BuyPrice {get; set;}
         public int Quantity { get; set; }
+
 
 // one to many with category
         public int? CategoryId { get; set; }

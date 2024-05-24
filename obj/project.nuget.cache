@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "Rd2dRs9U6BJdKW5Io6sV0lI8vbC+38gXZrlw+HS6aizcNsS99W1d0cyWsx0CQQhSlvRTpoL7WV9+R8M7u/qVTg==",
+  "dgSpecHash": "Zv2uPQW3ApZBt+nEvLV3gDJ42v1DLvnAPyA4zbph88DB01nAm3WahSqqb0tvwmslo6wG96ahtAINa3cEJOjDPA==",
   "success": true,
   "projectFilePath": "C:\\Users\\ali\\Desktop\\S4\\dotnet\\stockmanagment\\api\\api.csproj",
   "expectedPackageFiles": [
@@ -54,6 +54,8 @@
     "C:\\Users\\ali\\.nuget\\packages\\microsoft.win32.systemevents\\6.0.0\\microsoft.win32.systemevents.6.0.0.nupkg.sha512",
     "C:\\Users\\ali\\.nuget\\packages\\mono.texttemplating\\2.2.1\\mono.texttemplating.2.2.1.nupkg.sha512",
     "C:\\Users\\ali\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
+    "C:\\Users\\ali\\.nuget\\packages\\sendgrid\\9.29.3\\sendgrid.9.29.3.nupkg.sha512",
+    "C:\\Users\\ali\\.nuget\\packages\\starkbank-ecdsa\\1.3.3\\starkbank-ecdsa.1.3.3.nupkg.sha512",
     "C:\\Users\\ali\\.nuget\\packages\\swashbuckle.aspnetcore\\6.4.0\\swashbuckle.aspnetcore.6.4.0.nupkg.sha512",
     "C:\\Users\\ali\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.4.0\\swashbuckle.aspnetcore.swagger.6.4.0.nupkg.sha512",
     "C:\\Users\\ali\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.4.0\\swashbuckle.aspnetcore.swaggergen.6.4.0.nupkg.sha512",
