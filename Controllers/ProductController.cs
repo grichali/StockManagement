@@ -6,13 +6,14 @@ using api.Dtos.Product;
 using api.Interfaces;
 using api.Mappers;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
 {
+    [ApiController]
 
     [Route("api/[controller]")]
-    [ApiController]
     public class ProductController : ControllerBase
     {
         private readonly IProductRepository _productRepo;
@@ -25,7 +26,7 @@ namespace api.Controllers
 
 
         [HttpPost]
-        // [Authorize(Roles ="Admin")]
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> createProduct([FromBody] CreateProductDto productDto)
         {
             var product = await _productRepo.createProduct(productDto);
@@ -46,6 +47,20 @@ namespace api.Controllers
         {
             var product = await _productRepo.updateProduct(id, updateProductDto);
             return Ok(product.ToProductDto());
+        }
+
+        [HttpDelete("delete/")]
+        [Authorize(Roles ="Admin")]
+        public async Task<IActionResult> deleteProduct(int id)
+        {
+            var product = await _productRepo.DeleteProduct(id);
+
+            if(product == null)
+            {
+                return BadRequest("Product Not found");
+            }
+
+            return Ok("product has been deleted successfully");
         }
     }
 } 

@@ -88,5 +88,26 @@ namespace api.Repositories
             return products;
 
         }
+
+        public async Task<Product?> DeleteProduct(int productId)
+        {
+            var product = await _context.Product.Include(p => p.OrderItems).FirstOrDefaultAsync(p => p.Id == productId);
+            Console.WriteLine("product to delete is : ");
+            Console.WriteLine(product);
+            if (product != null)
+            {
+                foreach (var orderItem in product.OrderItems)
+                {
+                    _context.OrderItems.Remove(orderItem);
+                }
+
+                _context.Product.Remove(product);
+                await _context.SaveChangesAsync();
+                return product;
+            }
+
+            return null;
+        }
+
     }
 } 

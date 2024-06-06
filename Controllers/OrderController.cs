@@ -49,7 +49,7 @@ namespace api.Controllers
         public async Task<IActionResult> CreateOrder([FromBody] CreateOrderDto orderDto)
         {
             string username = User.GetUsername();
-            User user = await _userManager.FindByNameAsync(username);
+            User? user = await _userManager.FindByNameAsync(username);
             if(user == null)
             {
                 return BadRequest("User Not Found");
@@ -80,7 +80,7 @@ namespace api.Controllers
                 return NotFound($"Order with ID {id} not found");
             }
 
-            return Ok(deletedOrder);
+            return Ok("Order has been deleted successfully");
         }
 
         [HttpGet("getuserorders")]
@@ -89,7 +89,7 @@ namespace api.Controllers
         {
 
             string username = User.GetUsername();
-            User user = await _userManager.FindByNameAsync(username);
+            User? user = await _userManager.FindByNameAsync(username);
             if(user == null)
             {
                 return BadRequest("User Not Found");

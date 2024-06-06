@@ -18,7 +18,7 @@ namespace api.Service
       public Task SendEmailAsync(string email, string subject, string message)
         {
 
-             var emailUsername = _configuration["EmailSettings:Username"];
+            var emailUsername = _configuration["EmailSettings:Username"];
             var emailPassword = _configuration["EmailSettings:Password"];
 
             var client = new SmtpClient("smtp.gmail.com", 587)

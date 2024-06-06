@@ -30,10 +30,14 @@ namespace api.Repositories
 
         public async Task<Order?> Delete(int id)
         {
-            var order = await _context.Order.FindAsync(id);
+            var order = await _context.Order.Include(o => o.OrderItems).FirstOrDefaultAsync(o => o.Id == id);
 
             if(order != null)
             {
+                foreach (var orderItem in order.OrderItems)
+                {
+                    _context.OrderItems.Remove(orderItem);
+                }
                 _context.Order.Remove(order);
                 await _context.SaveChangesAsync();
                 return order;

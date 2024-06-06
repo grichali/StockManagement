@@ -66,17 +66,34 @@ namespace api.Repositories
             return category;
         }
 
-        public async Task<Category?> DeleteCategory(int id)
+       public async Task<bool> DeleteCategory(int id)
         {
-            Category category = await _context.Category.FindAsync(id);
+            Category? category = await _context.Category
+                .Include(c => c.Products)
+                    .ThenInclude(p => p.OrderItems)
+                .FirstOrDefaultAsync(c => c.id == id);
 
-            if(category != null)
+            if (category != null)
             {
+                foreach (var product in category.Products)
+                {
+                    foreach (var orderItem in product.OrderItems)
+                    {
+                        
+                        _context.OrderItems.Remove(orderItem);
+                    }
+                    
+                    _context.Product.Remove(product);
+                }
+
+                
                 _context.Category.Remove(category);
                 await _context.SaveChangesAsync();
-                return category;
+                return true;
             }
-            return null;
+
+            return false;
         }
+
     }
 }

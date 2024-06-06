@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
+using api.Data;
 using api.Dtos.User;
 using api.Extensions;
 using api.Interfaces;
 using api.Mappers;
 using api.Models;
 using api.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -26,13 +28,16 @@ namespace api.Controllers
         private readonly SignInManager<User> _signInManager;
         private readonly IEmailVerificationService _emailVerificationService;
 
+        private readonly ApplicationDbContext _context;
+
         public UserController(UserManager<User> userManager, ITokenService tokenService, SignInManager<User> signInManager
-        ,IEmailVerificationService emailVerificationService)
+        ,IEmailVerificationService emailVerificationService,ApplicationDbContext context)
         {
             _userManager = userManager;
             _tokenService = tokenService;
             _signInManager = signInManager;
             _emailVerificationService = emailVerificationService;
+            _context = context;
         }
 
         [HttpPost("user/signup")]
@@ -190,8 +195,43 @@ namespace api.Controllers
 
             return BadRequest("Invalid Or Expired Token");
         }
+        [HttpDelete("delete")]
+        [Authorize]
+       public async Task<IActionResult> DeleteUser()
+        {
+            string username = User.GetUsername();
 
+            User? user = await _userManager.Users
+                .Include(u => u.Orders)
+                    .ThenInclude(o => o.OrderItems)
+                .FirstOrDefaultAsync(u => u.UserName == username);
 
-        
+            if (user == null)
+            {
+                return BadRequest("User Not Found");
+            }
+
+            foreach (var order in user.Orders)
+            {
+                foreach (var orderItem in order.OrderItems)
+                {
+                    _context.OrderItems.Remove(orderItem);
+                }
+                _context.Order.Remove(order);
+            }
+
+            await _context.SaveChangesAsync();
+
+            var result = await _userManager.DeleteAsync(user);
+            if (result.Succeeded)
+            {
+                return Ok("User Deleted Successfully");
+            }
+            else
+            {
+                return StatusCode(500, "Error deleting user");
+            }
         }
+
+    }
 }

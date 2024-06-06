@@ -14,6 +14,6 @@ namespace api.Interfaces
         Task<Category> CreateCategory(CreateCategoryDto categoryDto);
 
         Task<Category?> UpdateCategory(int id,UpdateCategoryDto categoryDto);
-        Task<Category?> DeleteCategory(int id);
+        Task<bool> DeleteCategory(int id);
     }
 }

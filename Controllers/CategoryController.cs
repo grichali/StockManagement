@@ -22,7 +22,7 @@ namespace api.Controllers
         }
 
         [HttpPost("Create")]
-        // [Authorize(Roles ="Admin")]
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> CreateCategory([FromBody] CreateCategoryDto categoryDto)
         {
             if (!ModelState.IsValid || categoryDto == null)
@@ -42,7 +42,7 @@ namespace api.Controllers
         }
  
         [HttpGet("getall")]
-        // [Authorize(Roles ="Admin, User")]
+        [Authorize(Roles ="Admin, User")]
         public async Task<IActionResult> GetAllCategories()
         {
             try
@@ -83,10 +83,10 @@ namespace api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCategory(int id )
         {
-            Category? category = await _categoryRepo.DeleteCategory(id);
-            if(category != null)
+            bool category = await _categoryRepo.DeleteCategory(id);
+            if(category == true)
             {
-                Ok(category);
+                return Ok("Category has been deleted");
             }
 
             return NotFound("Category Not Found");
