@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
-using api.Dtos.Product;
+using api.Dtos.Product; 
 using api.Interfaces;
 using api.Models;
 using Microsoft.EntityFrameworkCore;
-
+ 
 namespace api.Repositories
 {
     public class ProductRepository : IProductRepository
@@ -19,7 +19,7 @@ namespace api.Repositories
         {
             _context = context;
         }
-        public async Task<Product> createProduct(CreateProductDto productDto)
+        public async Task<Product> createProduct(CreateProductDto productDto, string imageUrl)
         {
             var category = await _context.Category.FindAsync(productDto.CategoryId);
             if (category == null)
@@ -31,6 +31,7 @@ namespace api.Repositories
                 Price = productDto.Price,
                 Quantity = productDto.Quantity,
                 Category = category,
+                ImageUrl = imageUrl
             };
 
             await _context.Product.AddAsync(product);

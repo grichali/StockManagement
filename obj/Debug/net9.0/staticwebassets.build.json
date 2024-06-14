@@ -1,11 +1,39 @@
 {
   "Version": 1,
-  "Hash": "pyaMSCEWRZ4nvKCja2XnniyJFEBxfxA7VVvbHvFd6MQ=",
+  "Hash": "+SZkPcD3q9HSbCQeGNWWzkG7Vp+93pXTW1a7vIRIPEc=",
   "Source": "api",
   "BasePath": "_content/api",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": []
+  "DiscoveryPatterns": [
+    {
+      "Name": "api\\wwwroot",
+      "Source": "api",
+      "ContentRoot": "C:\\Users\\ali\\Desktop\\S4\\dotnet\\stockmanagment\\api\\wwwroot\\",
+      "BasePath": "_content/api",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\ali\\Desktop\\S4\\dotnet\\stockmanagment\\api\\wwwroot\\assets\\images\\fcd53abb-d3ad-48c3-93e1-d22d7469b392.jpg",
+      "SourceId": "api",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\ali\\Desktop\\S4\\dotnet\\stockmanagment\\api\\wwwroot\\",
+      "BasePath": "_content/api",
+      "RelativePath": "assets/images/fcd53abb-d3ad-48c3-93e1-d22d7469b392.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\assets\\images\\fcd53abb-d3ad-48c3-93e1-d22d7469b392.jpg"
+    }
+  ]
 }

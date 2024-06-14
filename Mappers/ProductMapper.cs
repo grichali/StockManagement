@@ -15,6 +15,7 @@ namespace api.Mappers
                 Name = product.Name,
                 Price = product.Price,
                 Quantity = product.Quantity,
+                ImageUrl = product.ImageUrl,
                 categoryDto = product.Category.ToCategoryDto(),
             };
         }

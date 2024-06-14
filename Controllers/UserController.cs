@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 using api.Data;
-using api.Dtos.User;
+using api.Dtos.User; 
 using api.Extensions;
 using api.Interfaces;
 using api.Mappers;
@@ -170,7 +170,7 @@ namespace api.Controllers
 
             await _emailVerificationService.SendEmailAsync(user.Email, "Reset Password", $"Your token is : <b>{token}</b>");
 
-            return Ok("Password reset link has been sent to your email." + token);
+            return Ok("Password reset token has been sent to your email.");
         }
 
         [HttpPost("reset-password")]

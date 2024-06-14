@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -13,7 +14,11 @@ namespace api.Dtos.Product
 
 
         public int Quantity { get; set; }
+ 
+        public float BuyPrice {get; set;}
 
         public int CategoryId { get; set; }     
+
+        public IFormFile Image { get; set; }
     }
 }

@@ -9,7 +9,7 @@ namespace api.Models
     public class Product
     {
 
-        [Key]
+        [Key] 
         public int Id { get; set; }
 
         public string Name { get; set; } = string.Empty;
@@ -19,7 +19,7 @@ namespace api.Models
         public float BuyPrice {get; set;}
         public int Quantity { get; set; }
 
-
+         public string ImageUrl { get; set; } = string.Empty;
 // one to many with category
         public int? CategoryId { get; set; }
         

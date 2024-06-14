@@ -17,6 +17,8 @@ namespace api.Dtos.Product
 
         public int Quantity { get; set; }
         
+        public string ImageUrl { get; set; } = string.Empty;
+
         public CategoryDto? categoryDto { get; set; }
     }
 }

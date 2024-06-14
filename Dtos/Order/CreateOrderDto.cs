@@ -8,9 +8,7 @@ using api.Dtos.OrderItems;
 namespace api.Dtos.Order
 {
     public class CreateOrderDto
-    {        
-        public string UserId { get; set; }
-
+    {
         public List<CreateOrderItemDTO> Items { get; set; } = new List<CreateOrderItemDTO>();
     }
 }

@@ -23,18 +23,36 @@ namespace api.Controllers
         {
             _productRepo = productRepo;
         }
-
-
-        [HttpPost]
-        [Authorize(Roles ="Admin")]
-        public async Task<IActionResult> createProduct([FromBody] CreateProductDto productDto)
+       private async Task<string> UploadImage(IFormFile image)
         {
-            var product = await _productRepo.createProduct(productDto);
+            string folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "assets", "images");
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+            string fileName = $"{Guid.NewGuid()}{Path.GetExtension(image.FileName)}";
+
+            string filePath = Path.Combine(folderPath, fileName);
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await image.CopyToAsync(stream);
+            }
+
+            return $"/assets/images/{fileName}"; 
+        } 
+
+        [HttpPost("Create")]
+        [Authorize(Roles ="Admin")]
+        public async Task<IActionResult> createProduct([FromForm] CreateProductDto productDto)
+        {
+            string imageUrl = await UploadImage(productDto.Image);
+            var product = await _productRepo.createProduct(productDto,imageUrl);
             return Ok(product.ToProductDto());
         }
 
 
-        [HttpGet]
+        [HttpGet("GetAll")]
         [Authorize(Roles ="Admin, User")]
         public async Task<IActionResult> getAllProduct(){
             var products = await _productRepo.getAllProducts();
@@ -43,7 +61,7 @@ namespace api.Controllers
 
         [HttpPut("update/")]
         [Authorize(Roles ="Admin")]
-        public async Task<IActionResult> updateProduct([FromRoute] int id ,[FromBody] UpdateProductDto updateProductDto)
+        public async Task<IActionResult> updateProduct(int id ,[FromBody] UpdateProductDto updateProductDto)
         {
             var product = await _productRepo.updateProduct(id, updateProductDto);
             return Ok(product.ToProductDto());
@@ -62,5 +80,6 @@ namespace api.Controllers
 
             return Ok("product has been deleted successfully");
         }
+
     }
 } 

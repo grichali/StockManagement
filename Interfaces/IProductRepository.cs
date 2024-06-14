@@ -9,7 +9,7 @@ namespace api.Interfaces
 {
     public interface IProductRepository
     {
-        Task<Product> createProduct(CreateProductDto productDto);
+        Task<Product> createProduct(CreateProductDto productDto, string imageUrl);  
 
         Task<Product> updateProduct(int id , UpdateProductDto updateProductDto);
         

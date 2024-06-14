@@ -51,13 +51,13 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "b7b8eb72-d6d9-442c-9906-e078e29efe73",
+                            Id = "a9b42e4a-75eb-4904-a4f1-bfd6cad1a911",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "8d83a375-55d7-4ec1-ad56-d4f380426df1",
+                            Id = "64680c0b-023f-4364-bebe-fedb811c87f8",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -254,6 +254,10 @@ namespace api.Migrations
 
                     b.Property<int?>("CategoryId")
                         .HasColumnType("int");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()

@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
+using api.Dtos.Category;
 using api.Dtos.Order;
+using api.Dtos.Product;
+using api.Dtos.Statistics;
 using api.Interfaces;
 using api.Mappers;
 using api.Models;
@@ -27,26 +30,6 @@ namespace api.Repositories
             var orders = await _context.Order.Include(u => u.User).Include(e => e.OrderItems).ThenInclude(p => p.Product).ToListAsync();
             return orders;
         }
-
-        public async Task<Order?> Delete(int id)
-        {
-            var order = await _context.Order.Include(o => o.OrderItems).FirstOrDefaultAsync(o => o.Id == id);
-
-            if(order != null)
-            {
-                foreach (var orderItem in order.OrderItems)
-                {
-                    _context.OrderItems.Remove(orderItem);
-                }
-                _context.Order.Remove(order);
-                await _context.SaveChangesAsync();
-                return order;
-            }
-
-            return null;
-        }
-
-
 
         public async Task<Order?> GetOrderById(int id)
         {
@@ -73,11 +56,11 @@ namespace api.Repositories
             return orders;
         } 
 
-          public async Task<Order?> CreateOrder(CreateOrderDto orderDto)
+          public async Task<Order?> CreateOrder(CreateOrderDto orderDto,string userId)
         {
             var order = new Order{
                 Date = DateTime.Now,
-                UserId = orderDto.UserId,
+                UserId = userId,
             };
 
             _context.Order.Add(order);
@@ -126,5 +109,82 @@ namespace api.Repositories
 
             return order;
         }
+
+        public async Task<GlobalStatisticsDto> GetStatistics(DateTime startDate, DateTime endDate)
+        {
+            var orders = await _context.Order
+                .Include(u => u.User)
+                .Include(o => o.OrderItems)
+                .ThenInclude(oi => oi.Product)
+                .ThenInclude(p => p.Category)
+                .Where(o => o.Date >= startDate.Date && o.Date < endDate.Date.AddDays(1))
+                .ToListAsync();
+            var productStatistics = new Dictionary<int, ProductStatisticsDto>();
+            var categoryStatistics = new Dictionary<int, CategoryStatisticsDto>();
+            decimal totalProfit = 0m;
+            foreach (var order in orders)
+                {
+                    foreach (var orderItem in order.OrderItems)
+                    {
+                        var product = orderItem.Product;
+                        var category = product.Category;
+
+                        if (!productStatistics.ContainsKey(product.Id))
+                        {
+                            productStatistics[product.Id] = new ProductStatisticsDto
+                            {
+                                ProductId = product.Id,
+                                ProductName = product.Name,
+                                QuantitySold = 0,
+                                TotalProfit = 0m
+                            };
+                        }
+
+                        productStatistics[product.Id].QuantitySold += orderItem.Quantity;
+                        productStatistics[product.Id].TotalProfit += (orderItem.Quantity * (decimal)(product.Price - product.BuyPrice));
+
+                        if (!categoryStatistics.ContainsKey(category.id))
+                        {
+                            categoryStatistics[category.id] = new CategoryStatisticsDto
+                            {
+                                CategoryId = category.id,
+                                CategoryName = category.Name,
+                                TotalProfit = 0m
+                            };
+                        }
+
+                        categoryStatistics[category.id].TotalProfit += (orderItem.Quantity * (decimal)(product.Price - product.BuyPrice));
+                        decimal profit = (decimal)(orderItem.Product.Price - orderItem.Product.BuyPrice) * orderItem.Quantity;
+                        totalProfit += profit;
+                    }
+                    }
+
+                    return new GlobalStatisticsDto
+                    {
+                        ProductStatistics = productStatistics.Values.ToList(),
+                        CategoryStatistics = categoryStatistics.Values.ToList(),
+                        TotalProfit = totalProfit 
+                    };
+        }
+
+        public async Task<Order?> Delete(int id)
+        {
+            var order = await _context.Order.Include(o => o.OrderItems).FirstOrDefaultAsync(o => o.Id == id);
+
+            if(order != null)
+            {
+                foreach (var orderItem in order.OrderItems)
+                {
+                    _context.OrderItems.Remove(orderItem);
+                }
+                _context.Order.Remove(order);
+                await _context.SaveChangesAsync();
+                return order;
+            }
+
+            return null;
+        }
+
+
     }
 }

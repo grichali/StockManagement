@@ -9,6 +9,7 @@ using api.Mappers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using api.Extensions;
+using api.Dtos.Statistics; 
 
 namespace api.Controllers
 {
@@ -54,14 +55,13 @@ namespace api.Controllers
             {
                 return BadRequest("User Not Found");
             }
-            orderDto.UserId=user.Id;
 
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var createdOrder = await _orderRepo.CreateOrder(orderDto);
+            var createdOrder = await _orderRepo.CreateOrder(orderDto,user.Id);
             if (createdOrder == null)
             {
                 return BadRequest("Failed to create order");
@@ -70,19 +70,7 @@ namespace api.Controllers
             return Ok(createdOrder.ToOrderDto());
         }
 
-        [HttpDelete("delete/{id}")]
-        [Authorize(Roles = "Admin,User")]
-        public async Task<IActionResult> DeleteOrder(int id)
-        {
-            var deletedOrder = await _orderRepo.Delete(id);
-            if (deletedOrder == null)
-            {
-                return NotFound($"Order with ID {id} not found");
-            }
-
-            return Ok("Order has been deleted successfully");
-        }
-
+      
         [HttpGet("getuserorders")]
         [Authorize(Roles = "Admin,User")]
         public async Task<IActionResult> GetOrdersByUSer()
@@ -101,6 +89,32 @@ namespace api.Controllers
                 return NotFound($"Order with ID {id} not found");
             }
             return Ok(order.Select(x => x.ToOrderDto()));
+        }
+
+        [HttpPost("statistics")]
+        public async Task<IActionResult> GetStatistics([FromBody] StatisticsRequestDto request)
+        {
+            if (request.StartDate > request.EndDate)
+            {
+                return BadRequest("Invalid date range.");
+            }
+
+            var statistics = await _orderRepo.GetStatistics(request.StartDate, request.EndDate);
+
+            return Ok(statistics);
+        }
+
+        [HttpDelete("delete/{id}")]
+        [Authorize(Roles = "Admin,User")]
+        public async Task<IActionResult> DeleteOrder(int id)
+        {
+            var deletedOrder = await _orderRepo.Delete(id);
+            if (deletedOrder == null)
+            {
+                return NotFound($"Order with ID {id} not found");
+            }
+
+            return Ok("Order has been deleted successfully");
         }
     }
 }

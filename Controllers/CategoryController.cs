@@ -55,8 +55,8 @@ namespace api.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
-
-        [HttpPut("{id}")]
+ 
+        [HttpPut("update/{id}")]
         [Authorize(Roles ="Admin")]
         public async Task<IActionResult> UpdateCategory(int id, [FromBody] UpdateCategoryDto categoryDto)
         {
@@ -80,7 +80,7 @@ namespace api.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteCategory(int id )
         {
             bool category = await _categoryRepo.DeleteCategory(id);
