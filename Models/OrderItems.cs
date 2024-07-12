@@ -18,12 +18,10 @@ namespace api.Models
         public int? ProductId { get; set; }
 
         public Product Product { get; set; }
-// end
 
 // one to many with orders 
         public int? OrderId { get; set; }
 
         public Order? Order { get; set; }
-// end
     }
 } 

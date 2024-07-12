@@ -24,11 +24,9 @@ namespace api.Models
         public int? CategoryId { get; set; }
         
         public Category  Category { get; set; }
-//end 
 
 // many to one with orderitems
         public List<OrderItems> OrderItems { get; set; } = new List<OrderItems>();
-//end
 
     }
 }

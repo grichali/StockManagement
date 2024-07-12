@@ -18,7 +18,7 @@ namespace api.Controllers
 
         public CategoryController(ICategoryRepository categoryRepository)
         {
-            _categoryRepo = categoryRepository ?? throw new ArgumentNullException(nameof(categoryRepository));
+            _categoryRepo = categoryRepository;
         }
 
         [HttpPost("Create")]

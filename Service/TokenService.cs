@@ -31,7 +31,7 @@ namespace api.Service
                 new Claim(JwtRegisteredClaimNames.UniqueName,user.Id)
             };
 
-            // Add roles to the claims
+            
             claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
             var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
