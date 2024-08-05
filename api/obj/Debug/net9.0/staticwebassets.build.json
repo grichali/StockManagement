@@ -1,0 +1,19 @@
+{
+  "Version": 1,
+  "Hash": "G+DBH+Oc0Rdsbo6aQUWnmHFVZm3BX13vr76hARrN140=",
+  "Source": "api",
+  "BasePath": "_content/api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "api\\wwwroot",
+      "Source": "api",
+      "ContentRoot": "C:\\Users\\ali\\Desktop\\Perso\\All\\MY PROJECTS\\S4\\stockmanagment\\api\\wwwroot\\",
+      "BasePath": "_content/api",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": []
+}
