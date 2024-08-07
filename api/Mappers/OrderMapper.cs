@@ -20,7 +20,6 @@ namespace api.Mappers
                 Id = order.Id,
                 Date = order.Date,
                 totalamount = order.amount,
-                Username = order.User.UserName,
                 OrderItems = order.OrderItems.Select( e => e.ToOrderItem()).ToList(),
             };
         }

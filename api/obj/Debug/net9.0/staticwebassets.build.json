@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "G+DBH+Oc0Rdsbo6aQUWnmHFVZm3BX13vr76hARrN140=",
+  "Hash": "4yEAI14rBxXiHz/b+yllz3UZrtcNVVXlnbSBxKk3Lkw=",
   "Source": "api",
   "BasePath": "_content/api",
   "Mode": "Default",
@@ -15,5 +15,25 @@
       "Pattern": "**"
     }
   ],
-  "Assets": []
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\ali\\Desktop\\Perso\\All\\MY PROJECTS\\S4\\stockmanagment\\api\\wwwroot\\assets\\images\\a75a5941-286c-4398-a504-96d4b5c29849.JPG",
+      "SourceId": "api",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\ali\\Desktop\\Perso\\All\\MY PROJECTS\\S4\\stockmanagment\\api\\wwwroot\\",
+      "BasePath": "_content/api",
+      "RelativePath": "assets/images/a75a5941-286c-4398-a504-96d4b5c29849.JPG",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\assets\\images\\a75a5941-286c-4398-a504-96d4b5c29849.JPG"
+    }
+  ]
 }

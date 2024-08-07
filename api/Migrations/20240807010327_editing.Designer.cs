@@ -12,8 +12,8 @@ using api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240613112026_InitMig")]
-    partial class InitMig
+    [Migration("20240807010327_editing")]
+    partial class editing
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,13 +54,13 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "a9b42e4a-75eb-4904-a4f1-bfd6cad1a911",
+                            Id = "7c27bb87-6afe-42b6-b96f-5efe56fc9ca1",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "64680c0b-023f-4364-bebe-fedb811c87f8",
+                            Id = "17a887f3-2b91-4c9b-bd88-863c5f0234c2",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -184,6 +184,10 @@ namespace api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -205,7 +209,6 @@ namespace api.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<float>("amount")
@@ -397,13 +400,9 @@ namespace api.Migrations
 
             modelBuilder.Entity("api.Models.Order", b =>
                 {
-                    b.HasOne("api.Models.User", "User")
+                    b.HasOne("api.Models.User", null)
                         .WithMany("Orders")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("api.Models.OrderItems", b =>

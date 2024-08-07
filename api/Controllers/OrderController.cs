@@ -26,7 +26,7 @@ namespace api.Controllers
         }
 
         [HttpGet("GetAll")]
-        [Authorize(Roles = "Admin")]
+        // [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllOrders()
         {
             var orders = await _orderRepo.GetOrdersAll();
@@ -34,7 +34,7 @@ namespace api.Controllers
         }
 
         [HttpGet("getbyid/{id}")]
-        [Authorize(Roles = "Admin")]
+        // [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetOrderById(int id)
         {
             var order = await _orderRepo.GetOrderById(id);
@@ -46,7 +46,7 @@ namespace api.Controllers
         }
 
         [HttpPost("Create")]
-        [Authorize(Roles = "Admin, User")]
+        // [Authorize(Roles = "Admin, User")]
         public async Task<IActionResult> CreateOrder([FromBody] CreateOrderDto orderDto)
         {
             string username = User.GetUsername();
@@ -70,26 +70,6 @@ namespace api.Controllers
             return Ok(createdOrder.ToOrderDto());
         }
 
-      
-        [HttpGet("getuserorders")]
-        [Authorize(Roles = "Admin,User")]
-        public async Task<IActionResult> GetOrdersByUSer()
-        {
-
-            string username = User.GetUsername();
-            User? user = await _userManager.FindByNameAsync(username);
-            if(user == null)
-            {
-                return BadRequest("User Not Found");
-            }
-            string id = user.Id;
-            var order = await _orderRepo.GetOrdersByUser(id);
-            if (order == null)
-            {
-                return NotFound($"Order with ID {id} not found");
-            }
-            return Ok(order.Select(x => x.ToOrderDto()));
-        }
 
         [HttpPost("statistics")]
         public async Task<IActionResult> GetStatistics([FromBody] StatisticsRequestDto request)
@@ -105,7 +85,7 @@ namespace api.Controllers
         }
 
         [HttpDelete("delete/{id}")]
-        [Authorize(Roles = "Admin,User")]
+        // [Authorize(Roles = "Admin,User")]
         public async Task<IActionResult> DeleteOrder(int id)
         {
             var deletedOrder = await _orderRepo.Delete(id);

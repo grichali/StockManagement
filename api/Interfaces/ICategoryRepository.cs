@@ -11,7 +11,7 @@ namespace api.Interfaces
     {
         Task<List<Category>> GetAllCategories();
 
-        Task<Category> CreateCategory(CreateCategoryDto categoryDto);
+        Task<Category> CreateCategory(CreateCategoryDto categoryDto, string imageUrl);
 
         Task<Category?> UpdateCategory(int id,UpdateCategoryDto categoryDto);
         Task<bool> DeleteCategory(int id);

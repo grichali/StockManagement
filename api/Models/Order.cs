@@ -12,12 +12,6 @@ namespace api.Models
         public DateTime Date { get; set; }
         
         public float amount { get; set; }
-        
-// one to many with users
-        public string UserId { get; set; }
-
-        
-        public User User { get; set; }
 
 // many to one with orderitems
         public List<OrderItems> OrderItems { get; set; } = new List<OrderItems>();

@@ -14,6 +14,7 @@ namespace api.Mappers
                 id = category.id,
                 Name = category.Name,
                 Description = category.Description,
+                ImageUrl = category.ImageUrl
             };
         }
     }

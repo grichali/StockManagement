@@ -7,7 +7,7 @@ namespace api.Dtos.Category
 {
     public class CategoryStatisticsDto
     {
-         public int CategoryId { get; set; }
+    public int CategoryId { get; set; }
     public string CategoryName { get; set; }
     public decimal TotalProfit { get; set; }
     }

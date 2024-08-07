@@ -16,8 +16,6 @@ namespace api.Interfaces
 
         Task<Order?> GetOrderById(int id);
 
-        Task<List<Order>> GetOrdersByUser(string id);
-
         Task<Order?> Delete(int id);
 
         Task<GlobalStatisticsDto> GetStatistics(DateTime startDate, DateTime endDate);

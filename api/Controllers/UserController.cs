@@ -196,7 +196,7 @@ namespace api.Controllers
             return BadRequest("Invalid Or Expired Token");
         }
         [HttpDelete("delete")]
-        [Authorize]
+        // [Authorize]
        public async Task<IActionResult> DeleteUser()
         {
             string username = User.GetUsername();

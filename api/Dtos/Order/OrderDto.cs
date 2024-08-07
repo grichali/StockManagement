@@ -14,8 +14,6 @@ namespace api.Dtos.Order
         
         public float totalamount { get; set; }
 
-        public String? Username { get; set; }
-
         public List<OrderItemsDto> OrderItems { get; set; } = new List<OrderItemsDto>();  
     }
 } 

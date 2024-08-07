@@ -27,14 +27,14 @@ namespace api.Repositories
 
         public async Task<List<Order>> GetOrdersAll()
         {
-            var orders = await _context.Order.Include(u => u.User).Include(e => e.OrderItems).ThenInclude(p => p.Product).ToListAsync();
+            var orders = await _context.Order.Include(e => e.OrderItems).ThenInclude(p => p.Product).ToListAsync();
             return orders;
         }
 
         public async Task<Order?> GetOrderById(int id)
         {
             var order = await _context.Order
-                .Include(u => u.User).Include(e => e.OrderItems).ThenInclude(p => p.Product)
+                .Include(e => e.OrderItems).ThenInclude(p => p.Product)
                 .FirstOrDefaultAsync(s => s.Id == id);
 
             if (order != null)
@@ -46,21 +46,10 @@ namespace api.Repositories
         }
 
 
-        public async Task<List<Order>> GetOrdersByUser(string userId)
-        {
-            var orders = await _context.Order
-                .Where(o => o.UserId.Equals(userId))
-                .Include(u => u.User).Include(e => e.OrderItems).ThenInclude(p => p.Product)
-                .ToListAsync();
-
-            return orders;
-        } 
-
           public async Task<Order?> CreateOrder(CreateOrderDto orderDto,string userId)
         {
             var order = new Order{
                 Date = DateTime.Now,
-                UserId = userId,
             };
 
             _context.Order.Add(order);
@@ -113,7 +102,6 @@ namespace api.Repositories
         public async Task<GlobalStatisticsDto> GetStatistics(DateTime startDate, DateTime endDate)
         {
             var orders = await _context.Order
-                .Include(u => u.User)
                 .Include(o => o.OrderItems)
                 .ThenInclude(oi => oi.Product)
                 .ThenInclude(p => p.Category)

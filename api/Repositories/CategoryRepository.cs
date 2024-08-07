@@ -16,7 +16,7 @@ namespace api.Repositories
             _context = context;
         }
 
-        public async Task<Category> CreateCategory(CreateCategoryDto categoryDto)
+        public async Task<Category> CreateCategory(CreateCategoryDto categoryDto ,string imageUrl)
         {
             if (categoryDto == null)
             {
@@ -27,6 +27,7 @@ namespace api.Repositories
             var category = new Category{
                 Name = categoryDto.Name,
                 Description = categoryDto.Description,
+                ImageUrl = imageUrl,
             };
 
             await _context.Category.AddAsync(category);

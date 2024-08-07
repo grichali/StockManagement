@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using api.Dtos.Category;
+using api.Extensions;
 using api.Interfaces;
 using api.Mappers;
 using api.Models;
@@ -15,15 +16,16 @@ namespace api.Controllers
     public class CategoryController : ControllerBase
     {
         private readonly ICategoryRepository _categoryRepo;
-
-        public CategoryController(ICategoryRepository categoryRepository)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public CategoryController(ICategoryRepository categoryRepository,IWebHostEnvironment webHostEnvironment)
         {
             _categoryRepo = categoryRepository;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         [HttpPost("Create")]
-        [Authorize(Roles ="Admin")]
-        public async Task<IActionResult> CreateCategory([FromBody] CreateCategoryDto categoryDto)
+        // [Authorize(Roles ="Admin")]
+        public async Task<IActionResult> CreateCategory([FromForm] CreateCategoryDto categoryDto)
         {
             if (!ModelState.IsValid || categoryDto == null)
             {
@@ -32,7 +34,8 @@ namespace api.Controllers
 
             try
             {
-                var createdCategory = await _categoryRepo.CreateCategory(categoryDto);
+                string imageUrl = await categoryDto.Image.UploadCategory(_webHostEnvironment);
+                var createdCategory = await _categoryRepo.CreateCategory(categoryDto,imageUrl);
                 return Ok(createdCategory.ToCategoryDto());
             }
             catch (Exception ex)
@@ -42,7 +45,7 @@ namespace api.Controllers
         }
  
         [HttpGet("getall")]
-        [Authorize(Roles ="Admin, User")]
+        // [Authorize(Roles ="Admin, User")]
         public async Task<IActionResult> GetAllCategories()
         {
             try
@@ -57,7 +60,7 @@ namespace api.Controllers
         }
  
         [HttpPut("update/{id}")]
-        [Authorize(Roles ="Admin")]
+        // [Authorize(Roles ="Admin")]
         public async Task<IActionResult> UpdateCategory(int id, [FromBody] UpdateCategoryDto categoryDto)
         {
             if (!ModelState.IsValid || categoryDto == null)
