@@ -23,6 +23,7 @@ export class RegisterComponent {
       for (const control of Object.values(registerForm.controls)) {
         control.markAsTouched();
       }
+      return;
     }
     if (this.password !== this.confirmPassword) {
       Swal.fire({
@@ -46,21 +47,6 @@ export class RegisterComponent {
         },
         error => {
           console.error('An error occurred during registration', error);
-          // let errorMessage = 'An unknown error occurred. Please try again later.';
-          // if (error.status === 400) {
-          //   console.log("hada howa error" )
-          //   console.log("xx",error.errorincludes('Email') )
-          //   if (error.error.message.includes('Email')) {
-          //     errorMessage = 'Email already exists.';
-          //   } else if (error.error.message.includes('username')) {
-          //     errorMessage = 'Username already exists.';
-          //   }
-          // }
-          // else if (error.error.message.includes('Password')){
-          //   errorMessage = error.error.message;
-          // } else if (error.status === 0) {
-          //   errorMessage = 'Network error. Please check your internet connection.';
-          // }
           Swal.fire({
             title: 'Error',
             text: 'An error occurred during registration',
