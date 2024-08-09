@@ -4,6 +4,7 @@ import { CommonModule } from "@angular/common";
 import { AppRoutingModule } from "./app-routing.module";
 import { AuthModule } from "./auth/auth.module";
 import { BrowserModule } from "@angular/platform-browser";
+import { HttpClientModule } from "@angular/common/http";
 
 
 
@@ -14,7 +15,8 @@ import { BrowserModule } from "@angular/platform-browser";
     CommonModule,
     BrowserModule,
     AppRoutingModule,
-    AuthModule
+    AuthModule,
+    HttpClientModule
   ],
   bootstrap: [AppComponent],
 })
