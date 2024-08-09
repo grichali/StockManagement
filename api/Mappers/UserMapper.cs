@@ -11,10 +11,10 @@ namespace api.Mappers
     {
         public static UserDto ToUserDto(this User user){
             return new UserDto{
-                // Id = user.Id,
-                // UserName = user.UserName,
-                // Email = user.Email,
-    
+                Id = user.Id,
+                UserName = user.UserName,
+                Email = user.Email,
+                fullName = user.fullName,
             };
         }
     }

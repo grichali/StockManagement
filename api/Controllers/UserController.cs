@@ -52,7 +52,8 @@ namespace api.Controllers
                     }
                     var user = new User{
                         UserName = signUpDto.UserName,
-                        Email = signUpDto.Email
+                        Email = signUpDto.Email,
+                        fullName = signUpDto.fullName
                     };
 
                     var createduser = await _userManager.CreateAsync(user, signUpDto.Password);
@@ -66,6 +67,7 @@ namespace api.Controllers
                                 Id = user.Id,
                                 UserName = user.UserName,
                                 Email = user.Email,
+                                fullName = user.fullName,
                                 Token = _tokenService.CreateToken(user, roles)
                             });
                         }else{
@@ -92,7 +94,8 @@ namespace api.Controllers
                     }
                     var user = new User{
                         UserName = signUpDto.UserName,
-                        Email = signUpDto.Email
+                        Email = signUpDto.Email,
+                        fullName = signUpDto.fullName
                     };
 
                     var createduser = await _userManager.CreateAsync(user, signUpDto.Password);
@@ -106,6 +109,7 @@ namespace api.Controllers
                                 Id = user.Id,
                                 UserName = user.UserName,
                                 Email = user.Email,
+                                fullName = user.fullName,
                                 Token = _tokenService.CreateToken(user, roles)
                             });
                         }else{

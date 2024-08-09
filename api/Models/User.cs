@@ -11,8 +11,7 @@ namespace api.Models
     public class User : IdentityUser
     {
 
-        public string firstname {get; set;} = string.Empty;        
-        public string lastname {get; set;} = string.Empty;        
+        public string fullName {get; set;} = string.Empty;        
         public List<Order> Orders { get; set; } = new List<Order>();
 
     }
