@@ -41,7 +41,7 @@ namespace api.Service
                 Expires = DateTime.Now.AddDays(7),
                 SigningCredentials = creds,
                 Issuer = _config["JWT:Issuer"],
-                Audience = _config["JWT:Audience"]
+                Audience = _config["JWT:Audience"],
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();

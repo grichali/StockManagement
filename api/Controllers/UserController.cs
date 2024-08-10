@@ -145,16 +145,17 @@ namespace api.Controllers
             }
 
             var roles = await _userManager.GetRolesAsync(user);
-            return Ok(
-                new UserDto
-                {
-                    Id = user.Id,
-                    UserName = user.UserName,
-                    Email = user.Email,
-                    fullName = user.fullName,
-                    Token = _tokenService.CreateToken(user, roles)    
-                }
-            );
+            var token = _tokenService.CreateToken(user, roles);
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                IsEssential = true,
+                Expires = DateTime.UtcNow.AddDays(7), 
+                SameSite = SameSiteMode.None
+            };
+            HttpContext.Response.Cookies.Append("token", token, cookieOptions);
+            return Ok();
         }
     
         [HttpPost("forgot-password")]

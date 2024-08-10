@@ -22,7 +22,8 @@ builder.Services.AddCors(options =>
                {
                    builder.WithOrigins(allowedOrigins)
                           .AllowAnyHeader()
-                          .AllowAnyMethod();
+                          .AllowAnyMethod()
+                          .AllowCredentials();
                });
 });
 builder.Services.AddControllers();
@@ -84,7 +85,12 @@ builder.Services.AddAuthentication(options => {
     options.DefaultScheme =
     options.DefaultSignInScheme =
     options.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(options => {
+}).AddCookie(
+    x => {
+        x.Cookie.Name = "token";
+    }
+)
+.AddJwtBearer(options => {
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
@@ -95,6 +101,14 @@ builder.Services.AddAuthentication(options => {
         IssuerSigningKey = new SymmetricSecurityKey(
             System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigningKey"])
         )
+    };
+    options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context => 
+        {
+            context.Token = context.Request.Cookies["token"];
+            return Task.CompletedTask;
+        }
     };
 });
 

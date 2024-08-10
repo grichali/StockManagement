@@ -26,7 +26,7 @@ namespace api.Controllers
         }
 
         [HttpGet("GetAll")]
-        // [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllOrders()
         {
             var orders = await _orderRepo.GetOrdersAll();
