@@ -131,7 +131,7 @@ namespace api.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == logInDto.UserName);
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Email == logInDto.Email);
             if(user == null)
             {
                 return Unauthorized("Incorrect password or username");
@@ -141,7 +141,7 @@ namespace api.Controllers
 
             if(!result.Succeeded)
             {
-                return Unauthorized("Incorrect password or username");
+                return Unauthorized("Incorrect Password or Email");
             }
 
             var roles = await _userManager.GetRolesAsync(user);
@@ -151,6 +151,7 @@ namespace api.Controllers
                     Id = user.Id,
                     UserName = user.UserName,
                     Email = user.Email,
+                    fullName = user.fullName,
                     Token = _tokenService.CreateToken(user, roles)    
                 }
             );
