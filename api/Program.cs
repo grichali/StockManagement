@@ -14,7 +14,26 @@ using Microsoft.OpenApi.Models;
 
 
 var builder = WebApplication.CreateBuilder(args);
-
+var allowedOrigins = builder.Configuration["CorsSettings:AllowedOrigins"];
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+              builder =>
+               {
+                   builder.WithOrigins(allowedOrigins)
+                          .AllowAnyHeader()
+                          .AllowAnyMethod()
+                          .AllowCredentials();
+               });
+    // Mt7aydch hadchi 
+    //  options.AddPolicy("AllowAll",
+    //         builder =>
+    //         {
+    //             builder.AllowAnyOrigin()
+    //                    .AllowAnyMethod()
+    //                    .AllowAnyHeader();
+    //         });
+});
 builder.Services.AddControllers();
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
@@ -74,7 +93,12 @@ builder.Services.AddAuthentication(options => {
     options.DefaultScheme =
     options.DefaultSignInScheme =
     options.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(options => {
+}).AddCookie(
+    x => {
+        x.Cookie.Name = "token";
+    }
+)
+.AddJwtBearer(options => {
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
@@ -85,6 +109,14 @@ builder.Services.AddAuthentication(options => {
         IssuerSigningKey = new SymmetricSecurityKey(
             System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigningKey"])
         )
+    };
+    options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context => 
+        {
+            context.Token = context.Request.Cookies["token"];
+            return Task.CompletedTask;
+        }
     };
 });
 
@@ -107,6 +139,10 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 
 app.UseAuthorization();
+app.UseCors("AllowSpecificOrigin");
+    // Mt7aydch hadchi 
+// app.UseCors("AllowAll");
+// app.Urls.Add("http://0.0.0.0:5113");
 
 
 

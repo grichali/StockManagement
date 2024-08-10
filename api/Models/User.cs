@@ -11,7 +11,7 @@ namespace api.Models
     public class User : IdentityUser
     {
 
-        
+        public string fullName {get; set;} = string.Empty;        
         public List<Order> Orders { get; set; } = new List<Order>();
 
     }

@@ -52,7 +52,8 @@ namespace api.Controllers
                     }
                     var user = new User{
                         UserName = signUpDto.UserName,
-                        Email = signUpDto.Email
+                        Email = signUpDto.Email,
+                        fullName = signUpDto.fullName
                     };
 
                     var createduser = await _userManager.CreateAsync(user, signUpDto.Password);
@@ -66,6 +67,7 @@ namespace api.Controllers
                                 Id = user.Id,
                                 UserName = user.UserName,
                                 Email = user.Email,
+                                fullName = user.fullName,
                                 Token = _tokenService.CreateToken(user, roles)
                             });
                         }else{
@@ -92,7 +94,8 @@ namespace api.Controllers
                     }
                     var user = new User{
                         UserName = signUpDto.UserName,
-                        Email = signUpDto.Email
+                        Email = signUpDto.Email,
+                        fullName = signUpDto.fullName
                     };
 
                     var createduser = await _userManager.CreateAsync(user, signUpDto.Password);
@@ -106,6 +109,7 @@ namespace api.Controllers
                                 Id = user.Id,
                                 UserName = user.UserName,
                                 Email = user.Email,
+                                fullName = user.fullName,
                                 Token = _tokenService.CreateToken(user, roles)
                             });
                         }else{
@@ -127,7 +131,7 @@ namespace api.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == logInDto.UserName);
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Email == logInDto.Email);
             if(user == null)
             {
                 return Unauthorized("Incorrect password or username");
@@ -137,19 +141,21 @@ namespace api.Controllers
 
             if(!result.Succeeded)
             {
-                return Unauthorized("Incorrect password or username");
+                return Unauthorized("Incorrect Password or Email");
             }
 
             var roles = await _userManager.GetRolesAsync(user);
-            return Ok(
-                new UserDto
-                {
-                    Id = user.Id,
-                    UserName = user.UserName,
-                    Email = user.Email,
-                    Token = _tokenService.CreateToken(user, roles)    
-                }
-            );
+            var token = _tokenService.CreateToken(user, roles);
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                IsEssential = true,
+                Expires = DateTime.UtcNow.AddDays(7), 
+                SameSite = SameSiteMode.None
+            };
+            HttpContext.Response.Cookies.Append("token", token, cookieOptions);
+            return Ok();
         }
     
         [HttpPost("forgot-password")]

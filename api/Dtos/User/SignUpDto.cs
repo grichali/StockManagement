@@ -10,6 +10,9 @@ namespace api.Dtos.User
     public class SignUpDto
     {
         [Required]
+        public string fullName {get; set;} = string.Empty;
+        
+        [Required]
         public string UserName { get; set; } = string.Empty;
 
         [EmailAddress]
@@ -17,5 +20,7 @@ namespace api.Dtos.User
 
         [Required]
         public string Password { get; set; } = string.Empty;
+
+
     }
 }
