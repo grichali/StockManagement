@@ -25,6 +25,14 @@ builder.Services.AddCors(options =>
                           .AllowAnyMethod()
                           .AllowCredentials();
                });
+    // Mt7aydch hadchi 
+    //  options.AddPolicy("AllowAll",
+    //         builder =>
+    //         {
+    //             builder.AllowAnyOrigin()
+    //                    .AllowAnyMethod()
+    //                    .AllowAnyHeader();
+    //         });
 });
 builder.Services.AddControllers();
 builder.Services.AddControllers().AddJsonOptions(options =>
@@ -132,6 +140,9 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 app.UseCors("AllowSpecificOrigin");
+    // Mt7aydch hadchi 
+// app.UseCors("AllowAll");
+// app.Urls.Add("http://0.0.0.0:5113");
 
 
 
