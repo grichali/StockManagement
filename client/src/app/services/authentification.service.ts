@@ -39,4 +39,21 @@ export class AuthentificationService {
       )
     )
   }
+
+
+  Login(email: string, password: string) {
+    return this.http
+      .post<any>(`${environment.apiUrl}/api/User/Login`, { email, password })
+      .pipe(
+        tap(
+          (response) => {
+            console.log("Login successful:", response);
+          },
+          (error) => {
+            console.log("Login error:", error);
+          }
+        )
+      );
+  }
+
 }
