@@ -10,6 +10,8 @@ using api.Interfaces;
 using api.Mappers;
 using api.Models;
 using api.Repositories;
+using Google.Apis.Auth;
+using Google.Apis.Auth.OAuth2.Requests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -238,6 +240,46 @@ namespace api.Controllers
                 return StatusCode(500, "Error deleting user");
             }
         }
+        [HttpPost("google-signin")]
+    public async Task<IActionResult> GoogleAuth([FromBody] Dtos.User.TokenRequest request){
+            string tokenId = request.TokenId;
+            Console.Write(tokenId);
+
+            GoogleJsonWebSignature.Payload payload = await _tokenService.VerifyGoogleToken(tokenId);
+            if (payload == null) BadRequest("invalid Authetication service");
+
+            var info = new UserLoginInfo("GOOGLE", payload?.Subject, "GOOGLE");
+            User user = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
+            if(user == null){
+                user = await _userManager.FindByEmailAsync(payload.Email);
+                if(user == null){
+                    user = new User{
+                        UserName = payload.GivenName,
+                        Email = payload.Email,
+                        fullName = payload.Name,
+                    };
+                    await _userManager.CreateAsync(user);
+                    await _userManager.AddToRoleAsync(user, "User");
+                    await _userManager.AddLoginAsync(user, info);
+                }else{
+                    await _userManager.AddLoginAsync(user, info);
+                }
+            }
+            if(user == null)BadRequest("invalid Authetication service");
+            var roles = await _userManager.GetRolesAsync(user);
+            var token = _tokenService.CreateToken(user, roles);
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                IsEssential = true,
+                Expires = DateTime.UtcNow.AddDays(7), 
+                SameSite = SameSiteMode.None
+            };
+            HttpContext.Response.Cookies.Append("token", token, cookieOptions);
+            return Ok();
+    }
 
     }
+    
 }

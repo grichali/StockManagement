@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using api.Interfaces;
 using api.Models;
+using Google.Apis.Auth;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.Identity.Client;
 using Microsoft.IdentityModel.Tokens;
 
@@ -16,11 +18,13 @@ namespace api.Service
     {
         private readonly IConfiguration _config;
         private readonly SymmetricSecurityKey _key ; 
+        private readonly IConfigurationSection _goolgeSettings;
 
         public TokenService(IConfiguration configuration)
         {
             _config = configuration ; 
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWT:SigningKey"]));
+            _goolgeSettings = configuration.GetSection("GoogleAuthSettings");
         }
         public string CreateToken(User user, IList<string> roles)
         {
@@ -48,6 +52,17 @@ namespace api.Service
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
             return tokenHandler.WriteToken(token);
+        }
+        public async Task<GoogleJsonWebSignature.Payload> VerifyGoogleToken(string tokenId){
+            try{
+                GoogleJsonWebSignature.ValidationSettings settigns = new GoogleJsonWebSignature.ValidationSettings(){
+                    Audience = new List<string> {_goolgeSettings.GetSection("clientId").Value}
+                };
+                GoogleJsonWebSignature.Payload payload = await GoogleJsonWebSignature.ValidateAsync(tokenId, settigns);
+                return payload;
+            }catch(Exception ex){
+                return null;
+            }
         }
 
     }

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace api.Migrations
 {
     /// <inheritdoc />
-    public partial class editing : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -32,6 +32,7 @@ namespace api.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    fullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -246,8 +247,8 @@ namespace api.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "17a887f3-2b91-4c9b-bd88-863c5f0234c2", null, "User", "USER" },
-                    { "7c27bb87-6afe-42b6-b96f-5efe56fc9ca1", null, "Admin", "ADMIN" }
+                    { "80ac092c-6f01-48e4-bff2-7e5de24f0494", null, "Admin", "ADMIN" },
+                    { "b0a83d25-0250-43f8-a44b-322ad564a155", null, "User", "USER" }
                 });
 
             migrationBuilder.CreateIndex(

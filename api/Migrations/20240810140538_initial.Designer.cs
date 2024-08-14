@@ -12,8 +12,8 @@ using api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240807010327_editing")]
-    partial class editing
+    [Migration("20240810140538_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,13 +54,13 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "7c27bb87-6afe-42b6-b96f-5efe56fc9ca1",
+                            Id = "80ac092c-6f01-48e4-bff2-7e5de24f0494",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "17a887f3-2b91-4c9b-bd88-863c5f0234c2",
+                            Id = "b0a83d25-0250-43f8-a44b-322ad564a155",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -333,6 +333,10 @@ namespace api.Migrations
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("fullName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
