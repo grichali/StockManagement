@@ -2,6 +2,8 @@ declare var google: any;
 import { Component, OnInit } from '@angular/core';
 import { AuthentificationService } from '../../services/authentification.service';
 import Swal from 'sweetalert2';
+import { CookieService } from 'ngx-cookie-service';
+import { Route, Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -14,10 +16,33 @@ export class LoginComponent implements OnInit {
   email = '';
   password = '';
   loginFailed: boolean = false;
+  isAuthenticated: boolean = false;
 
-  constructor(private authService: AuthentificationService) {}
+  constructor(
+    private authService: AuthentificationService,
+    private cookieService: CookieService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
+    this.authService.isAuthenticated().subscribe({
+      next: (res: boolean) => {
+        this.isAuthenticated = res;
+        console.log(this.isAuthenticated);
+        if (this.isAuthenticated) {
+          Swal.fire({
+            title: 'Success',
+            text: 'User is authenticated',
+            icon: 'success',
+          });
+          this.router.navigate(['/']);
+        }
+      },
+      error: (err: Error) => {
+        console.log(err);
+      },
+    });
+
     this.loadGoogleScript()
       .then(() => {
         this.initializeGoogleSignIn();

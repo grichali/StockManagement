@@ -95,4 +95,12 @@ export class AuthentificationService {
         )
       );
   }
+  isAuthenticated(): Observable<boolean> {
+    return this.http.get<boolean>(
+      `${environment.apiUrl}/api/User/isAuthenticated`,
+      {
+        withCredentials: true,
+      }
+    );
+  }
 }

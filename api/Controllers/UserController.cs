@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.IdentityModel.Tokens;
 
 namespace api.Controllers
 {
@@ -280,6 +281,16 @@ namespace api.Controllers
             return Ok();
     }
 
+    [HttpGet("isAuthenticated")]
+public IActionResult IsAuthenticated()
+{
+    var token = Request.Cookies["token"];
+    if (string.IsNullOrEmpty(token)) return Ok(false);
+    return Ok(true);
+}
+
     }
+
+    
     
 }
