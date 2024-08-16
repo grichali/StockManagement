@@ -242,7 +242,7 @@ namespace api.Controllers
             }
         }
         [HttpPost("google-signin")]
-    public async Task<IActionResult> GoogleAuth([FromBody] Dtos.User.TokenRequest request){
+        public async Task<IActionResult> GoogleAuth([FromBody] Dtos.User.TokenRequest request){
             string tokenId = request.TokenId;
             Console.Write(tokenId);
 
@@ -281,15 +281,14 @@ namespace api.Controllers
             return Ok();
     }
 
-    [HttpGet("isAuthenticated")]
-public IActionResult IsAuthenticated()
-{
-    var token = Request.Cookies["token"];
-    if (string.IsNullOrEmpty(token)) return Ok(false);
-    return Ok(true);
-}
-
+        [HttpGet("isAuthenticated")]
+        [Authorize]
+        public IActionResult IsAuthenticated()
+    {
+        return Ok(true);
     }
+
+}
 
     
     
