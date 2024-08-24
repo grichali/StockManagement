@@ -25,6 +25,8 @@ export class RegisterComponent {
       }
       return;
     }
+
+
     if (this.password !== this.confirmPassword) {
       Swal.fire({
         title: 'Error',
