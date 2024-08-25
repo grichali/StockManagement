@@ -85,6 +85,7 @@ namespace api.Controllers
         }
 
         [HttpDelete("delete/{id}")]
+         // [Authorize(Roles ="Admin")]
         public async Task<IActionResult> DeleteCategory(int id )
         {
             bool category = await _categoryRepo.DeleteCategory(id);
@@ -98,6 +99,7 @@ namespace api.Controllers
         }
 
         [HttpPost("upload-excel")]
+         // [Authorize(Roles ="Admin")]
         public async Task<IActionResult> UploadAndExtractData(IFormFile file)
         {
             if (file == null || file.Length == 0)
