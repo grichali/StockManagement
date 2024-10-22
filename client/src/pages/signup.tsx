@@ -1,5 +1,5 @@
 import React from "react";
-
+import signuppage from "../assets/img/signuppage.svg"
 const SignUp = () => {
   return (
     <section className="bg-white">
@@ -25,7 +25,7 @@ const SignUp = () => {
                 <div>
                   <label
                     htmlFor=""
-                    className="text-base font-medium text-gray-900"
+                    className="text-base font-medium text-gray-900 text-left"
                   >
                     {" "}
                     Email address{" "}
@@ -124,17 +124,18 @@ const SignUp = () => {
           <div>
             <img
               className="w-full mx-auto"
-              src="https://cdn.rareblocks.xyz/collection/celebration/images/signup/1/cards.png"
+              src={signuppage}
               alt=""
             />
 
             <div className="w-full max-w-md mx-auto xl:max-w-xl">
               <h3 className="text-2xl font-bold text-center text-black">
-                Design your own card
+                Simplify Your Stock Management Today
               </h3>
               <p className="leading-relaxed text-center text-gray-500 mt-2.5">
-                Amet minim mollit non deserunt ullamco est sit aliqua dolor do
-                amet sint. Velit officia consequat duis.
+              Effective stock management is the backbone of a successful business. With the right tools, you can reduce errors,
+               prevent stockouts, and ensure smooth operations that help you meet customer demand seamlessly.
+
               </p>
 
               <div className="flex items-center justify-center mt-10 space-x-3">
