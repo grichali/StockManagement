@@ -1,7 +1,7 @@
 import signuppage from "../assets/img/signuppage.svg"
 
 
-const LogIn = () => {
+const SignUp = () => {
     return (
         <section className="bg-white">
           <div className="grid grid-cols-1 lg:grid-cols-2">
@@ -9,18 +9,7 @@ const LogIn = () => {
               <div className="xl:w-full xl:max-w-sm 2xl:max-w-md xl:mx-auto">
                 <h2 className="text-3xl font-bold leading-tight text-black sm:text-4xl">
                   Sign in to Celebration
-                </h2>
-                <p className="mt-2 text-base text-gray-600">
-                  Don’t have an account?{" "}
-                  <a
-                    href="#"
-                    title=""
-                    className="font-medium text-blue-600 transition-all duration-200 hover:text-blue-700 hover:underline focus:text-blue-700"
-                  >
-                    Create a free account
-                  </a>
-                </p>
-    
+                </h2>    
                 <form action="#" method="POST" className="mt-8">
                   <div className="space-y-5">
                     <div>
@@ -154,4 +143,4 @@ const LogIn = () => {
       );
 }
 
-export default LogIn
+export default SignUp

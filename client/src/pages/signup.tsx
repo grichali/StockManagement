@@ -1,6 +1,6 @@
 import React from "react";
 import signuppage from "../assets/img/signuppage.svg"
-const SignUp = () => {
+const LogIn = () => {
   return (
     <section className="bg-white">
       <div className="grid grid-cols-1 lg:grid-cols-2">
@@ -12,7 +12,7 @@ const SignUp = () => {
             <p className="mt-2 text-base text-gray-600">
               Don’t have an account?{" "}
               <a
-                href="#"
+                href="/register"
                 title=""
                 className="font-medium text-blue-600 transition-all duration-200 hover:text-blue-700 hover:underline focus:text-blue-700"
               >
@@ -152,4 +152,4 @@ const SignUp = () => {
     </section>
   );
 };
-export default SignUp;
+export default LogIn;
