@@ -1,9 +1,10 @@
 import React from "react";
 import logo from "./logo.svg";
 import "./App.css";
-import SignUp from "./pages/signup";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import SignUp from "./pages/signup";
 import LogIn from "./pages/login";
+
 
 function App() {
   return (
