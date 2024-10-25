@@ -4,7 +4,7 @@ import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SignUp from "./pages/signup";
 import LogIn from "./pages/login";
-
+import Products from "./pages/dashboard/products";
 
 function App() {
   return (
@@ -13,6 +13,7 @@ function App() {
         <Routes>
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<LogIn />} />
+          <Route path="/products" element={<Products />} />
         </Routes>
       </BrowserRouter>
     </div>
