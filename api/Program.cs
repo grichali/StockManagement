@@ -17,23 +17,14 @@ var builder = WebApplication.CreateBuilder(args);
 var allowedOrigins = builder.Configuration["CorsSettings:AllowedOrigins"];
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowSpecificOrigin",
-              builder =>
-               {
-                   builder.WithOrigins(allowedOrigins)
-                          .AllowAnyHeader()
-                          .AllowAnyMethod()
-                          .AllowCredentials();
-               });
-    // Mt7aydch hadchi 
-    //  options.AddPolicy("AllowAll",
-    //         builder =>
-    //         {
-    //             builder.AllowAnyOrigin()
-    //                    .AllowAnyMethod()
-    //                    .AllowAnyHeader();
-    //         });
+    options.AddPolicy("AllowAll", builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyHeader()
+               .AllowAnyMethod();
+    });
 });
+
 builder.Services.AddControllers();
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
@@ -128,21 +119,17 @@ builder.Services.AddScoped<IEmailVerificationService,EmailVerificationService>()
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || '1' == '1')
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
-
 app.UseAuthentication();
 
 app.UseAuthorization();
-app.UseCors("AllowSpecificOrigin");
-    // Mt7aydch hadchi 
-// app.UseCors("AllowAll");
-// app.Urls.Add("http://0.0.0.0:5113");
+app.UseCors("AllowAll");
+
 
 
 
