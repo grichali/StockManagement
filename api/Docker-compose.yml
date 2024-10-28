@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=NewPassword!2024
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    ports:
+      - "1433:1433"
+    networks:
+      - mynetwork
+
+  api:
+    image: dotnetapi
+    container_name: apidyali
+    ports:
+      - "9000:8080"
+    networks:
+      - mynetwork
+    depends_on:
+      - sqlserver
+
+volumes:
+  sqlserver_data:
+    external: true  # This tells Docker Compose to use an existing volume instead of creating a new one
+
+
+networks:
+  mynetwork:

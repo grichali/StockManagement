@@ -1,0 +1,37 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\ali\\Desktop\\Perso\\All\\MY PROJECTS\\S4\\stockmanagment\\api\\wwwroot\\assets\\images\\a75a5941-286c-4398-a504-96d4b5c29849.JPG",
+      "PackagePath": "staticwebassets\\assets\\images\\a75a5941-286c-4398-a504-96d4b5c29849.JPG"
+    },
+    {
+      "Id": "C:\\Users\\ali\\Desktop\\Perso\\All\\MY PROJECTS\\S4\\stockmanagment\\api\\wwwroot\\images\\9cb7beb6-5333-48c2-82f0-cc0ded54964c_CDKJ5201.JPG",
+      "PackagePath": "staticwebassets\\images\\9cb7beb6-5333-48c2-82f0-cc0ded54964c_CDKJ5201.JPG"
+    },
+    {
+      "Id": "C:\\Users\\ali\\Desktop\\Perso\\All\\MY PROJECTS\\S4\\stockmanagment\\api\\wwwroot\\images\\category\\36cc9e4f-2de6-49f9-8fbb-673c5e4918a8_IMG_5224.JPG",
+      "PackagePath": "staticwebassets\\images\\category\\36cc9e4f-2de6-49f9-8fbb-673c5e4918a8_IMG_5224.JPG"
+    },
+    {
+      "Id": "C:\\Users\\ali\\Desktop\\Perso\\All\\MY PROJECTS\\S4\\stockmanagment\\api\\wwwroot\\images\\ce0e1039-15c8-43f3-a0b0-0bc7043ddceb_IMG_5224.JPG",
+      "PackagePath": "staticwebassets\\images\\ce0e1039-15c8-43f3-a0b0-0bc7043ddceb_IMG_5224.JPG"
+    },
+    {
+      "Id": "obj\\Release\\net8.0\\staticwebassets\\msbuild.api.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Release\\net8.0\\staticwebassets\\msbuild.build.api.props",
+      "PackagePath": "build\\api.props"
+    },
+    {
+      "Id": "obj\\Release\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.api.props",
+      "PackagePath": "buildMultiTargeting\\api.props"
+    },
+    {
+      "Id": "obj\\Release\\net8.0\\staticwebassets\\msbuild.buildTransitive.api.props",
+      "PackagePath": "buildTransitive\\api.props"
+    }
+  ],
+  "ElementsToRemove": []
+}
