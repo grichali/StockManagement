@@ -10,7 +10,7 @@ services:
     volumes:
       - sqlserver_data:/var/opt/mssql
     ports:
-      - "1433:1433"
+      - "1499:1433"
     networks:
       - mynetwork
 
@@ -26,7 +26,7 @@ services:
 
 volumes:
   sqlserver_data:
-    external: true  # This tells Docker Compose to use an existing volume instead of creating a new one
+    external: true
 
 
 networks:
