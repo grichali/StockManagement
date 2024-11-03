@@ -1,5 +1,5 @@
 import React from 'react';
-import { Bar } from 'react-chartjs-2';
+import { Bar, Doughnut } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
 import orders from "../../assets/img/orders.svg"
 import profite from "../../assets/img/profite.svg"
@@ -12,31 +12,56 @@ const Dashboard: React.FC = () => {
     const totalProfit = 5000;
     const totalProducts = 200;
     const chiffreDAffaire = 15000;
+    const topcategoriessell = [
+        { category: "Electronics", orders: 30 },
+        { category: "Books", orders: 20 },
+        { category: "Clothing", orders: 50 }
+    ];
+    const topSellingProducts = [
+        { "product": "Smartphone", "sales": 150 },
+        { "product": "Laptop", "sales": 100 },
+        { "product": "Headphones", "sales": 75 },
+        { "product": "Tablet", "sales": 50 },
+        { "product": "Smartwatch", "sales": 25 }
+    ];
+    
+    const categories = topcategoriessell.map(item => item.category);
+    const xx = topcategoriessell.map(item => item.orders);
 
-    // Static chart data
     const chartData = {
-        labels: ['Category 1', 'Category 2', 'Category 3', 'Category 4'],
+        labels: categories,
         datasets: [
             {
-                label: 'Sales',
-                data: [120, 150, 80, 200], // Sample sales data
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                ],
+                label: 'Orders',
+                data: xx,
+                backgroundColor: 'rgba(75, 192, 192, 0.6)',
                 borderWidth: 1,
             },
         ],
     };
-
+    const doughnutChartData = {
+        labels: topSellingProducts.map(item => item.product),
+        datasets: [
+            {
+                label: 'Top Selling Products',
+                data: topSellingProducts.map(item => item.sales),
+                backgroundColor: [
+                    '#FF6384',
+                    '#36A2EB',
+                    '#FFCE56',
+                    '#4BC0C0',
+                    '#9966FF'
+                ],
+                hoverBackgroundColor: [
+                    '#FF6384',
+                    '#36A2EB',
+                    '#FFCE56',
+                    '#4BC0C0',
+                    '#9966FF'
+                ]
+            }
+        ]
+    };
     return (
         <div className="flex h-screen">
             {/* Sidebar */}
@@ -86,12 +111,20 @@ const Dashboard: React.FC = () => {
                     </div>
                 </div>
             </div>
-
-                {/* Chart */}
-                {/* <div className="bg-white p-4 rounded shadow">
-                    <h3 className="text-lg font-semibold mb-4">Sales by Category</h3>
-                    <Bar data={chartData} options={{ maintainAspectRatio: false }} />
-                </div> */}
+            <div className='flex items-start'>
+                <div className="bg-white p-4 rounded shadow mb-6 max-w-lg mr-5">
+                        <h3 className="text-lg font-semibold">Categories Sales</h3>
+                        <div className='w-full'>
+                        <Bar data={chartData} />
+                        </div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 max-w-lg">
+                        <div className="bg-white p-4 rounded shadow">
+                            <h3 className="text-lg font-semibold mb-4">Top Selling Products</h3>
+                            <Doughnut data={doughnutChartData} />
+                        </div>
+                </div>
+            </div>
             </main>
         </div>
     );
