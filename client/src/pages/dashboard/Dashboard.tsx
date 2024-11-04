@@ -46,6 +46,7 @@ const Dashboard: React.FC = () => {
             },
         ],
     };
+    
     const doughnutChartData = {
         labels: topSellingProducts.map(item => item.product),
         datasets: [
@@ -183,7 +184,7 @@ const Dashboard: React.FC = () => {
                     </div>
                 </div>
             </div>
-            
+
             </main>
         </div>
     );
