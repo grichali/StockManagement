@@ -1,5 +1,5 @@
 import React from 'react';
-import { Bar, Doughnut } from 'react-chartjs-2';
+import { Bar, Doughnut, Line } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
 import orders from "../../assets/img/orders.svg"
 import profite from "../../assets/img/profite.svg"
@@ -25,6 +25,13 @@ const Dashboard: React.FC = () => {
         { "product": "Smartwatch", "sales": 25 }
     ];
     
+    const inventoryLevels = [
+        { product: "Smartphone", stock: 30 },
+        { product: "Laptop", stock: 15 },
+        { product: "Headphones", stock: 50 },
+        { product: "Tablet", stock: 25 },
+        { product: "Smartwatch", stock: 10 }
+    ];
     const categories = topcategoriessell.map(item => item.category);
     const xx = topcategoriessell.map(item => item.orders);
 
@@ -62,6 +69,42 @@ const Dashboard: React.FC = () => {
             }
         ]
     };
+    const horizontalBarChartData = {
+        labels: inventoryLevels.map(item => item.product),
+        datasets: [
+            {
+                label: "Inventory Levels",
+                data: inventoryLevels.map(item => item.stock),
+                backgroundColor: 'rgba(153, 102, 255, 0.6)',
+                borderColor: 'rgba(153, 102, 255, 1)',
+                borderWidth: 1
+            }
+        ]
+    };
+    const profitsOverMonthsData = {
+        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+        datasets: [
+            {
+                label: 'Monthly Profit',
+                data: [400, 450, 500, 600, 700, 800, 750, 900, 1000, 1100, 1200, 1300], // Sample data
+                fill: false,
+                backgroundColor: 'rgba(75, 192, 192, 1)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                tension: 0.1
+            }
+        ]
+    };
+    
+    const horizontalBarChartOptions: { indexAxis: "y"; scales: { x: { beginAtZero: boolean } } } = {
+        indexAxis: "y",
+        scales: {
+            x: {
+                beginAtZero: true
+            }
+        }
+    };
+    
+      
     return (
         <div className="flex h-screen">
             {/* Sidebar */}
@@ -111,20 +154,36 @@ const Dashboard: React.FC = () => {
                     </div>
                 </div>
             </div>
-            <div className='flex items-start'>
-                <div className="bg-white p-4 rounded shadow mb-6 max-w-lg mr-5">
-                        <h3 className="text-lg font-semibold">Categories Sales</h3>
-                        <div className='w-full'>
-                        <Bar data={chartData} />
-                        </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
+                <div className="bg-white p-4 rounded shadow h-64"> 
+                    <h3 className="text-lg font-semibold mb-4">Categories Sales</h3>
+                    <div className='w-full h-full'>
+                        <Bar data={chartData} options={{ maintainAspectRatio: false }} />
+                    </div>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 max-w-lg">
-                        <div className="bg-white p-4 rounded shadow">
-                            <h3 className="text-lg font-semibold mb-4">Top Selling Products</h3>
-                            <Doughnut data={doughnutChartData} />
-                        </div>
+
+                <div className="bg-white p-4 rounded shadow h-64"> 
+                    <h3 className="text-lg font-semibold mb-4">Top Selling Products</h3>
+                    <div className='w-full h-48'>
+                        <Doughnut data={doughnutChartData} options={{ maintainAspectRatio: false }} />
+                    </div>
+                </div>
+                
+                <div className="bg-white p-4 rounded shadow h-64"> 
+                    <h3 className="text-lg font-semibold mb-4">Profits Over Months</h3>
+                    <div className="w-full h-full">
+                        <Line data={profitsOverMonthsData} options={{ maintainAspectRatio: false }} />
+                    </div>
+                </div>
+
+                <div className="bg-white p-4 rounded shadow h-64"> {/* Inventory Levels by Product */}
+                    <h3 className="text-lg font-semibold mb-4">Inventory Levels by Product</h3>
+                    <div className="w-full h-full">
+                        <Bar data={horizontalBarChartData} options={horizontalBarChartOptions} />
+                    </div>
                 </div>
             </div>
+            
             </main>
         </div>
     );
