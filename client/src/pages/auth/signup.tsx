@@ -1,4 +1,4 @@
-import signuppage from "../assets/img/signuppage.svg"
+import signuppage from "../../assets/img/signuppage.svg"
 
 
 const SignUp = () => {

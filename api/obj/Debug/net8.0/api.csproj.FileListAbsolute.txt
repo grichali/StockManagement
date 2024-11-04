@@ -315,8 +315,3 @@ C:\Users\ali\Desktop\Perso\All\MY PROJECTS\S4\stockmanagment\api\bin\Debug\net8.
 C:\Users\ali\Desktop\Perso\All\MY PROJECTS\S4\stockmanagment\api\bin\Debug\net8.0\SixLabors.Fonts.dll
 C:\Users\ali\Desktop\Perso\All\MY PROJECTS\S4\stockmanagment\api\bin\Debug\net8.0\System.IO.Packaging.dll
 C:\Users\ali\Desktop\Perso\All\MY PROJECTS\S4\stockmanagment\api\bin\Debug\net8.0\XLParser.dll
-C:\Users\ali\Desktop\Perso\All\MY PROJECTS\S4\stockmanagment\api\bin\Debug\net8.0\out\web.config
-C:\Users\ali\Desktop\Perso\All\MY PROJECTS\S4\stockmanagment\api\bin\Debug\net8.0\out\api.deps.json
-C:\Users\ali\Desktop\Perso\All\MY PROJECTS\S4\stockmanagment\api\bin\Debug\net8.0\out\api.runtimeconfig.json
-C:\Users\ali\Desktop\Perso\All\MY PROJECTS\S4\stockmanagment\api\bin\Debug\net8.0\out\appsettings.Development.json
-C:\Users\ali\Desktop\Perso\All\MY PROJECTS\S4\stockmanagment\api\bin\Debug\net8.0\out\appsettings.json

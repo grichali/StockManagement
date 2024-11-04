@@ -1,5 +1,5 @@
 import React from "react";
-import signuppage from "../assets/img/signuppage.svg"
+import signuppage from "../../assets/img/signuppage.svg"
 const LogIn = () => {
   return (
     <section className="bg-white">
