@@ -1,5 +1,6 @@
 import React from "react";
 import products from "../../data/data";
+import Button from "@mui/material/Button";
 const Products = () => {
   return (
     <div className="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 pr-10 lg:px-8">
@@ -7,7 +8,7 @@ const Products = () => {
         <div className="flex justify-between">
           <div className="inline-flex border rounded w-7/12 px-2 lg:px-6 h-12 bg-transparent">
             <div className="flex flex-wrap items-stretch w-full h-full mb-6 relative">
-              <div className="flex">
+              <div className="flex ">
                 <span className="flex items-center leading-normal bg-transparent rounded rounded-r-none border border-r-0 border-none lg:px-3 py-2 whitespace-no-wrap text-grey-dark text-sm">
                   <svg
                     width="18"
@@ -39,6 +40,7 @@ const Products = () => {
               />
             </div>
           </div>
+          <Button variant="contained">+ Ajouter</Button>
         </div>
       </div>
 

@@ -11,8 +11,8 @@ const Sidebar = () => {
           </Link>
         </li>
         <li className="mb-4">
-          <Link to="/dashboard/orders" className="hover:text-gray-300">
-            Orders
+          <Link to="categories" className="hover:text-gray-300">
+            Categories
           </Link>
         </li>
         <li className="mb-4">

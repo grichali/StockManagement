@@ -3,7 +3,8 @@ import React from "react";
 import Sidebar from "../../components/sidebar";
 import { Route, Routes } from "react-router-dom";
 import Analytics from "../../components/analytics";
-import Products from "./products";
+import Products from "../../components/products";
+import Categories from "../../components/categories";
 
 const Dashboard: React.FC = () => {
   // Static data for now
@@ -15,6 +16,7 @@ const Dashboard: React.FC = () => {
         <Routes>
           <Route path="/" element={<Analytics />} />
           <Route path="/products" element={<Products />} />
+          <Route path="/categories" element={<Categories />} />
         </Routes>
       </main>
     </div>
