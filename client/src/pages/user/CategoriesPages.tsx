@@ -1,5 +1,3 @@
-// src/pages/CategoriesPage.tsx
-
 import React, { useEffect, useState } from 'react';
 import CategoryCard from '../../components/Categorycard';
 import { useNavigate } from 'react-router-dom';
@@ -55,50 +53,34 @@ const CategoriesPage: React.FC = () => {
         description: "Books across various genres",
         imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRL7kx6NQeMgan-XnJOJgL3HOlqFsnuBIP0XQ&s",
       },
-      {
-        id: 3,
-        name: "Books",
-        description: "Books across various genres",
-        imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRL7kx6NQeMgan-XnJOJgL3HOlqFsnuBIP0XQ&s",
-      },
-      {
-        id: 3,
-        name: "Books",
-        description: "Books across various genres",
-        imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRL7kx6NQeMgan-XnJOJgL3HOlqFsnuBIP0XQ&s",
-      },
-      {
-        id: 3,
-        name: "Books",
-        description: "Books across various genres",
-        imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRL7kx6NQeMgan-XnJOJgL3HOlqFsnuBIP0XQ&s",
-      },
+      // Add more categories as needed
     ];
 
     // Set static data as the categories state
     setCategories(staticCategories);
   }, []);
 
-  const handleCategoryClick = (categoryId: number) => {
-    navigate(`/products/${categoryId}`);
+  const handleCategoryClick = (category: Category) => {
+    navigate(`/user/produits/${category.id}`, {
+      state: { categoryName: category.name, categoryDescription: category.description }
+    });
   };
 
   return (
     <div>
-        <Navbar/>
-        <div className="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {categories.map((category) => (
-            <CategoryCard
-                key={category.id}
-                name={category.name}
-                description={category.description}
-                imageUrl={category.imageUrl}
-                onClick={() => handleCategoryClick(category.id)}
-            />
-            ))}
-        </div>
+      <Navbar />
+      <div className="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {categories.map((category) => (
+          <CategoryCard
+            key={category.id}
+            name={category.name}
+            description={category.description}
+            imageUrl={category.imageUrl}
+            onClick={() => handleCategoryClick(category)}
+          />
+        ))}
+      </div>
     </div>
-    
   );
 };
 

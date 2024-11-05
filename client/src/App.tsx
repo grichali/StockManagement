@@ -7,6 +7,7 @@ import LogIn from "./pages/auth/login";
 import Products from "./pages/dashboard/products";
 import Dashboard from "./pages/dashboard/Dashboard";
 import CategoriesPage from "./pages/user/CategoriesPages";
+import CategoryDetailPage from "./pages/user/CategoryDetailsPage";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/login" element={<LogIn />} />
           <Route path="/dashboard/*" element={<Dashboard />} />
           <Route path="/user/categories" element={<CategoriesPage />} />
+          <Route path="/user/produits/:id" element={<CategoryDetailPage/>} />
         </Routes>
       </BrowserRouter>
     </div>
