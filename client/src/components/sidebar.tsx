@@ -16,7 +16,7 @@ const Sidebar = () => {
           </Link>
         </li>
         <li className="mb-4">
-          <Link to="/dashboard/products" className="hover:text-gray-300">
+          <Link to="products" className="hover:text-gray-300">
             Products
           </Link>
         </li>
