@@ -7,7 +7,7 @@ import Products from "../../components/products";
 import Categories from "../../components/categories";
 
 const Dashboard: React.FC = () => {
-  // Static data for now
+
 
   return (
     <div className="flex h-screen">
