@@ -6,7 +6,7 @@ import Analytics from "../../components/analytics";
 import Products from "./products";
 
 const Dashboard: React.FC = () => {
-  // Static data for now
+
 
   return (
     <div className="flex h-screen">

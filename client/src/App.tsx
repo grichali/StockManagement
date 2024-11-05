@@ -6,6 +6,7 @@ import SignUp from "./pages/auth/signup";
 import LogIn from "./pages/auth/login";
 import Products from "./pages/dashboard/products";
 import Dashboard from "./pages/dashboard/Dashboard";
+import CategoriesPage from "./pages/user/CategoriesPages";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<LogIn />} />
           <Route path="/dashboard/*" element={<Dashboard />} />
+          <Route path="/user/categories" element={<CategoriesPage />} />
         </Routes>
       </BrowserRouter>
     </div>
