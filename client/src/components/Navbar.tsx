@@ -1,10 +1,14 @@
-// src/components/Navbar.tsx
 import React, { useState } from "react";
 import { useCart } from "../Context/CartContext";
 
 const Navbar: React.FC = () => {
-  const { cartItems, removeFromCart } = useCart();
+  const { cartItems, removeFromCart, clearCart, calculateTotal } = useCart();
   const [isCartOpen, setIsCartOpen] = useState(false);
+
+  const handleCheckout = () => {
+    console.log("Checkout submitted:", cartItems);
+    clearCart(); // Clear the cart after checkout (you can adjust the logic)
+  };
 
   return (
     <nav className="p-4 bg-blue-500 text-white flex justify-between items-center">
@@ -37,6 +41,20 @@ const Navbar: React.FC = () => {
                 </div>
               ))
             )}
+
+            {/* Submit button for checkout */}
+            <div className="mt-4">
+              <div className="flex justify-between items-center mb-2">
+                <span className="font-bold">Total: </span>
+                <span>${calculateTotal().toFixed(2)}</span>
+              </div>
+              <button
+                onClick={handleCheckout}
+                className="w-full bg-blue-500 text-white py-2 rounded mt-2"
+              >
+                Submit Order
+              </button>
+            </div>
           </div>
         )}
       </div>
