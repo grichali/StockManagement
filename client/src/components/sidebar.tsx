@@ -21,8 +21,8 @@ const Sidebar = () => {
           </Link>
         </li>
         <li className="mb-4">
-          <Link to="/dashboard/Analytics" className="hover:text-gray-300">
-            Analytics
+          <Link to="users" className="hover:text-gray-300">
+            Users
           </Link>
         </li>
         <li className="mb-4">

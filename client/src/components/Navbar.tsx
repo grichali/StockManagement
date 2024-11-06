@@ -1,31 +1,65 @@
-import React from 'react';
+import React, { useState } from "react";
+import { useCart } from "../Context/CartContext";
 
 const Navbar: React.FC = () => {
-    const userName = "John Doe"; 
-    const cartItemCount = 3; 
+  const { cartItems, removeFromCart, clearCart, calculateTotal } = useCart();
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
-    return (
-        <nav className="flex items-center justify-between p-4 bg-blue-600 text-white">
-            <div className="text-lg font-semibold">ShopApp</div>
-            
-            <div className="flex items-center gap-4">
-                <span className="hidden sm:inline">Hello, {userName}</span>
-                
-                <div className="relative">
-                    <button className="text-white">
-                        
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.2 6.3a1 1 0 001 1.2h10a1 1 0 001-1.2L17 13M7 13H5M15 6a2 2 0 100-4 2 2 0 000 4z" />
-                        </svg>
-                    </button>
-                    
-                    <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
-                        {cartItemCount}
-                    </span>
+  const handleCheckout = () => {
+    console.log("Checkout submitted:", cartItems);
+    clearCart(); // Clear the cart after checkout (you can adjust the logic)
+  };
+
+  return (
+    <nav className="p-4 bg-blue-500 text-white flex justify-between items-center">
+      <h1 className="text-2xl font-bold">E-commerce</h1>
+
+      <div className="relative">
+        <button
+          onClick={() => setIsCartOpen(!isCartOpen)}
+          className="relative bg-gray-800 text-white rounded-full p-2"
+        >
+          🛒 {cartItems.length}
+        </button>
+
+        {isCartOpen && (
+          <div className="absolute right-0 mt-2 w-64 bg-white text-black shadow-lg rounded p-4">
+            <h3 className="text-lg font-bold mb-2">Cart</h3>
+            {cartItems.length === 0 ? (
+              <p>No items in cart</p>
+            ) : (
+              cartItems.map((item) => (
+                <div key={item.id} className="flex justify-between items-center mb-2">
+                  <span>{item.name}</span>
+                  <span>{item.quantity} x ${item.price.toFixed(2)}</span>
+                  <button
+                    onClick={() => removeFromCart(item.id)}
+                    className="text-red-500 text-sm"
+                  >
+                    Remove
+                  </button>
                 </div>
+              ))
+            )}
+
+            {/* Submit button for checkout */}
+            <div className="mt-4">
+              <div className="flex justify-between items-center mb-2">
+                <span className="font-bold">Total: </span>
+                <span>${calculateTotal().toFixed(2)}</span>
+              </div>
+              <button
+                onClick={handleCheckout}
+                className="w-full bg-blue-500 text-white py-2 rounded mt-2"
+              >
+                Submit Order
+              </button>
             </div>
-        </nav>
-    );
+          </div>
+        )}
+      </div>
+    </nav>
+  );
 };
 
 export default Navbar;

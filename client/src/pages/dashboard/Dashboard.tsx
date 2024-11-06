@@ -5,10 +5,9 @@ import { Route, Routes } from "react-router-dom";
 import Analytics from "../../components/analytics";
 import Products from "../../components/products";
 import Categories from "../../components/categories";
+import Users from "../../components/users";
 
 const Dashboard: React.FC = () => {
-
-
   return (
     <div className="flex h-screen">
       <Sidebar />
@@ -17,6 +16,7 @@ const Dashboard: React.FC = () => {
           <Route path="/" element={<Analytics />} />
           <Route path="/products" element={<Products />} />
           <Route path="/categories" element={<Categories />} />
+          <Route path="/users" element={<Users />} />
         </Routes>
       </main>
     </div>

@@ -1,5 +1,3 @@
-// src/pages/CategoriesPage.tsx
-
 import React, { useEffect, useState } from "react";
 import CategoryCard from "../../components/Categorycard";
 import { useNavigate } from "react-router-dom";
@@ -88,8 +86,13 @@ const CategoriesPage: React.FC = () => {
     setCategories(staticCategories);
   }, []);
 
-  const handleCategoryClick = (categoryId: number) => {
-    navigate(`/products/${categoryId}`);
+  const handleCategoryClick = (category: Category) => {
+    navigate(`/user/produits/${category.id}`, {
+      state: {
+        categoryName: category.name,
+        categoryDescription: category.description,
+      },
+    });
   };
 
   return (
@@ -102,7 +105,7 @@ const CategoriesPage: React.FC = () => {
             name={category.name}
             description={category.description}
             imageUrl={category.imageUrl}
-            onClick={() => handleCategoryClick(category.id)}
+            onClick={() => handleCategoryClick(category)}
           />
         ))}
       </div>
