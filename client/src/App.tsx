@@ -4,7 +4,6 @@ import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SignUp from "./pages/auth/signup";
 import LogIn from "./pages/auth/login";
-import Products from "./pages/dashboard/products";
 import Dashboard from "./pages/dashboard/Dashboard";
 import CategoriesPage from "./pages/user/CategoriesPages";
 
