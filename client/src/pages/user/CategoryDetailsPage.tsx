@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
+import { useCart } from "../../Context/CartContext";
+import Navbar from "../../components/Navbar";
 
 interface Product {
   id: number;
@@ -7,16 +9,30 @@ interface Product {
   description: string;
   price: number;
   imageUrl: string;
-  available: number; // Stock available
-}
+  quantity: number;
+  available: number; // Add this if available is used in the code
+} 
 
-// Sample products array with stock data
 const sampleProducts: Product[] = [
-  { id: 1, name: "Product 1", description: "Description of Product 1", price: 29.99, imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRL7kx6NQeMgan-XnJOJgL3HOlqFsnuBIP0XQ&s", available: 10 },
-  { id: 2, name: "Product 2", description: "Description of Product 2", price: 19.99, imageUrl: "https://via.placeholder.com/150", available: 5 },
-  { id: 2, name: "Product 2", description: "Description of Product 2", price: 19.99, imageUrl: "https://via.placeholder.com/150", available: 5 },
-  { id: 2, name: "Product 2", description: "Description of Product 2", price: 19.99, imageUrl: "https://via.placeholder.com/150", available: 5 },
-  { id: 2, name: "Product 2", description: "Description of Product 2", price: 19.99, imageUrl: "https://via.placeholder.com/150", available: 5 },
+  {
+    id: 1,
+    name: "Product 1",
+    description: "This is a description for Product 1",
+    price: 10.0,
+    imageUrl: "/images/product1.jpg",
+    quantity: 1,
+    available: 10, // Add this value based on the quantity available
+  },
+  {
+    id: 2,
+    name: "Product 2",
+    description: "This is a description for Product 2",
+    price: 15.0,
+    imageUrl: "/images/product2.jpg",
+    quantity: 1,
+    available: 5,
+  },
+  // Add more products as needed
 ];
 
 const CategoryDetailPage: React.FC = () => {
@@ -24,7 +40,7 @@ const CategoryDetailPage: React.FC = () => {
   const location = useLocation();
   const { categoryName, categoryDescription } = location.state as { categoryName: string; categoryDescription: string };
 
-  // Track quantity for each product by ID
+  const { addToCart } = useCart();
   const [quantities, setQuantities] = useState<{ [key: number]: number }>({});
 
   const handleQuantityChange = (productId: number, value: number) => {
@@ -36,11 +52,13 @@ const CategoryDetailPage: React.FC = () => {
 
   const handleAddToCart = (product: Product) => {
     const quantity = quantities[product.id] || 1;
-    console.log("Added to cart:", { product, quantity });
+    addToCart(product, quantity);
   };
 
   return (
-    <div className="p-6">
+    <div>
+      <Navbar />
+      <div className="p-6">
       <h2 className="text-2xl font-bold mb-2">{categoryName}</h2>
       <p className="text-gray-600 mb-6">{categoryDescription}</p>
 
@@ -52,7 +70,7 @@ const CategoryDetailPage: React.FC = () => {
             <p className="text-gray-500">{product.description}</p>
             <p className="text-gray-800 font-bold mb-4">${product.price.toFixed(2)}</p>
             <p className="text-sm text-gray-600">Available: {product.available}</p>
-            
+
             <div className="flex items-center mb-4">
               <label htmlFor={`quantity-${product.id}`} className="text-sm mr-2">Quantity:</label>
               <input
@@ -69,7 +87,7 @@ const CategoryDetailPage: React.FC = () => {
             <button
               className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
               onClick={() => handleAddToCart(product)}
-              disabled={quantities[product.id] > product.available} 
+              disabled={quantities[product.id] > product.available}
             >
               Add to Cart
             </button>
@@ -77,6 +95,8 @@ const CategoryDetailPage: React.FC = () => {
         ))}
       </div>
     </div>
+    </div>
+
   );
 };
 

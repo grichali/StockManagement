@@ -2,15 +2,18 @@ import React from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import {CartProvider} from "./Context/CartContext"
 import SignUp from "./pages/auth/signup";
 import LogIn from "./pages/auth/login";
 import Products from "./pages/dashboard/products";
 import Dashboard from "./pages/dashboard/Dashboard";
 import CategoriesPage from "./pages/user/CategoriesPages";
 import CategoryDetailPage from "./pages/user/CategoryDetailsPage";
+import Cart from "./components/cart";
 
 function App() {
   return (
+    <CartProvider>
     <div className="App ">
       <BrowserRouter>
         <Routes>
@@ -22,6 +25,8 @@ function App() {
         </Routes>
       </BrowserRouter>
     </div>
+    </CartProvider>
+
   );
 }
 
