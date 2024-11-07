@@ -206,8 +206,9 @@ namespace api.Controllers
 
             return BadRequest("Invalid Or Expired Token");
         }
+        
         [HttpDelete("delete")]
-        // [Authorize]
+        [Authorize("Admin")]
        public async Task<IActionResult> DeleteUser()
         {
             string username = User.GetUsername();
@@ -288,6 +289,31 @@ namespace api.Controllers
         public IActionResult IsAuthenticated()
         {
             return Ok(true);
+        }
+
+        [HttpGet("all")]
+        [Authorize("Admin")]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            try
+            {
+                var users = await _userManager.Users.ToListAsync();
+
+                var userDtos = users.Select(user => new UserDto
+                {
+                    Id = user.Id,
+                    UserName = user.UserName,
+                    Email = user.Email,
+                    fullName = user.fullName,
+                    status = user.status
+                });
+
+                return Ok(userDtos);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
         }
 
 }

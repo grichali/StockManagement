@@ -20,5 +20,7 @@ namespace api.Dtos.User
 
         public string fullName {get; set;} = string.Empty;
 
+        public bool status { get; set; }
+
     }
 }
