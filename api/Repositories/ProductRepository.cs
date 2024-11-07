@@ -50,35 +50,13 @@ namespace api.Repositories
                 throw new Exception("Product not found");
             }
 
+            product.Name = updateProductDto.Name;
             
-            if(!string.IsNullOrWhiteSpace(updateProductDto.Name))
-            {
-                product.Name = updateProductDto.Name;
-            }
+            product.Price = updateProductDto.Price;
 
-            if(!float.IsNaN(updateProductDto.Price))
-            {
-                product.Price = updateProductDto.Price;
-            }
+            product.Quantity = updateProductDto.Quantity;
 
-            if(!float.IsNaN(updateProductDto.Quantity))
-            {
-                product.Quantity = updateProductDto.Quantity;
-            }
-
-            if(updateProductDto.CategoryId != 0)
-            {
-                var category = await _context.Category.FindAsync(updateProductDto.CategoryId);
-                if (category == null)
-                {
-                    throw new Exception("Category not found");
-                }
-                product.Category = category;
-            }
-            if (_context.ChangeTracker.HasChanges())
-            {
-                await _context.SaveChangesAsync();
-            }
+            await _context.SaveChangesAsync();
 
             return product;
         }
