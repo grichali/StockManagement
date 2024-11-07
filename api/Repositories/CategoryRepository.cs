@@ -49,21 +49,12 @@ namespace api.Repositories
                 throw new Exception("Category not found");
             }
 
-            if (!string.IsNullOrWhiteSpace(categoryDto.Name))
-            {
-                category.Name = categoryDto.Name;
-            }
+            category.Name = categoryDto.Name;
 
-            if (!string.IsNullOrWhiteSpace(categoryDto.Description))
-            {
-                category.Description = categoryDto.Description;
-            }
+            category.Description = categoryDto.Description;
 
-            if (_context.ChangeTracker.HasChanges())
-            {
-                await _context.SaveChangesAsync();
-            }
-
+            await _context.SaveChangesAsync();
+                
             return category;
         }
 

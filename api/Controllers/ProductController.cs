@@ -28,7 +28,7 @@ namespace api.Controllers
 
 
         [HttpPost("Create")]
-        // [Authorize(Roles ="Admin")]
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> createProduct([FromForm] CreateProductDto productDto)
         {
             string imageUrl = await productDto.Image.UploadProduit(_webHostEnvironment);
@@ -38,14 +38,21 @@ namespace api.Controllers
 
 
         [HttpGet("GetAll")]
-        // [Authorize(Roles ="Admin, User")]
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> getAllProduct(){
             var products = await _productRepo.getAllProducts();
             return Ok(products.Select(x=> x.ToProductDto()));
         }
 
+        [HttpGet("getproductbycategorie/{id}")]
+        public async Task<IActionResult> getAllProductsByCategorie([FromRoute] int id)
+        {
+            var products = await _productRepo.getAllProductsByCategorie(id);
+            return Ok(products.Select(x=> x.ToProductDto()));        
+        }
+
         [HttpPut("update/")]
-        // [Authorize(Roles ="Admin")]
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> updateProduct(int id ,[FromBody] UpdateProductDto updateProductDto)
         {
             var product = await _productRepo.updateProduct(id, updateProductDto);
@@ -53,7 +60,7 @@ namespace api.Controllers
         }
 
         [HttpDelete("delete/")]
-        // [Authorize(Roles ="Admin")]
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> deleteProduct(int id)
         {
             var product = await _productRepo.DeleteProduct(id);

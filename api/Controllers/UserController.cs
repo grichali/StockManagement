@@ -56,7 +56,8 @@ namespace api.Controllers
                     var user = new User{
                         UserName = signUpDto.UserName,
                         Email = signUpDto.Email,
-                        fullName = signUpDto.fullName
+                        fullName = signUpDto.fullName,
+                        status = false,
                     };
 
                     var createduser = await _userManager.CreateAsync(user, signUpDto.Password);
@@ -98,7 +99,8 @@ namespace api.Controllers
                     var user = new User{
                         UserName = signUpDto.UserName,
                         Email = signUpDto.Email,
-                        fullName = signUpDto.fullName
+                        fullName = signUpDto.fullName,
+                        status = true,
                     };
 
                     var createduser = await _userManager.CreateAsync(user, signUpDto.Password);
@@ -204,8 +206,9 @@ namespace api.Controllers
 
             return BadRequest("Invalid Or Expired Token");
         }
+        
         [HttpDelete("delete")]
-        // [Authorize]
+        [Authorize("Admin")]
        public async Task<IActionResult> DeleteUser()
         {
             string username = User.GetUsername();
@@ -284,9 +287,34 @@ namespace api.Controllers
         [HttpGet("isAuthenticated")]
         [Authorize]
         public IActionResult IsAuthenticated()
-    {
-        return Ok(true);
-    }
+        {
+            return Ok(true);
+        }
+
+        [HttpGet("all")]
+        [Authorize("Admin")]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            try
+            {
+                var users = await _userManager.Users.ToListAsync();
+
+                var userDtos = users.Select(user => new UserDto
+                {
+                    Id = user.Id,
+                    UserName = user.UserName,
+                    Email = user.Email,
+                    fullName = user.fullName,
+                    status = user.status
+                });
+
+                return Ok(userDtos);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
+        }
 
 }
 
