@@ -7,7 +7,7 @@ const Navbar: React.FC = () => {
 
   const handleCheckout = () => {
     console.log("Checkout submitted:", cartItems);
-    clearCart(); // Clear the cart after checkout (you can adjust the logic)
+    clearCart(); 
   };
 
   return (

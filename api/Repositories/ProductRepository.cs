@@ -110,5 +110,10 @@ namespace api.Repositories
             return null;
         }
 
+        public async Task<List<Product>> getAllProductsByCategorie(int categorieId)
+        {
+            var products = await _context.Product.Where(x => x.CategoryId == categorieId).ToListAsync();
+            return products;
+        }
     }
 } 

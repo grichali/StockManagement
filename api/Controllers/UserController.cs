@@ -284,9 +284,9 @@ namespace api.Controllers
         [HttpGet("isAuthenticated")]
         [Authorize]
         public IActionResult IsAuthenticated()
-    {
-        return Ok(true);
-    }
+        {
+            return Ok(true);
+        }
 
 }
 
