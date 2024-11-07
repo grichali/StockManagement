@@ -26,13 +26,13 @@ const Users = () => {
                   className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2"
                   htmlFor="category_name"
                 >
-                  Category Name
+                  Username
                 </label>
                 <input
                   className="appearance-none block w-full bg-white text-gray-900 font-medium border border-gray-400 rounded-lg py-3 px-3 leading-tight focus:outline-none focus:border-[#98c01d]"
                   type="text"
                   name="name"
-                  placeholder="Category Name"
+                  placeholder="username"
                   required
                 />
               </div>
@@ -69,7 +69,7 @@ const Users = () => {
                     />
                   </svg>
                   <h2 className="mt-4 text-xl font-medium text-gray-700 tracking-wide">
-                    Category image
+                    User image
                   </h2>
                   <p className="mt-2 text-gray-500 tracking-wide">
                     Upload or drag & drop your file SVG, PNG, JPG or GIF.
