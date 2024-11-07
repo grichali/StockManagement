@@ -90,7 +90,7 @@ namespace api.Repositories
 
         public async Task<List<Product>> getAllProductsByCategorie(int categorieId)
         {
-            var products = await _context.Product.Where(x => x.CategoryId == categorieId).ToListAsync();
+            var products = await _context.Product.Where(x => x.CategoryId == categorieId && x.Quantity >= 1).ToListAsync();
             return products;
         }
     }

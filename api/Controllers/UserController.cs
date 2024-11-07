@@ -56,7 +56,8 @@ namespace api.Controllers
                     var user = new User{
                         UserName = signUpDto.UserName,
                         Email = signUpDto.Email,
-                        fullName = signUpDto.fullName
+                        fullName = signUpDto.fullName,
+                        status = false,
                     };
 
                     var createduser = await _userManager.CreateAsync(user, signUpDto.Password);
@@ -98,7 +99,8 @@ namespace api.Controllers
                     var user = new User{
                         UserName = signUpDto.UserName,
                         Email = signUpDto.Email,
-                        fullName = signUpDto.fullName
+                        fullName = signUpDto.fullName,
+                        status = true,
                     };
 
                     var createduser = await _userManager.CreateAsync(user, signUpDto.Password);
