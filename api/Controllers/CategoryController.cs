@@ -46,7 +46,7 @@ namespace api.Controllers
         }
  
         [HttpGet("getall")]
-        [Authorize(Roles ="Admin, User")]
+        // [Authorize(Roles ="Admin, User")]
         public async Task<IActionResult> GetAllCategories()
         {
             try

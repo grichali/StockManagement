@@ -12,78 +12,30 @@ interface Category {
 
 const CategoriesPage: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Static data
-    const staticCategories: Category[] = [
-      {
-        id: 1,
-        name: "Electronics",
-        description: "All kinds of electronic devices",
-        imageUrl:
-          "https://i0.wp.com/onthesauceagain.com/wp-content/uploads/2024/01/rinck-content-studio-XwK1EyFAHJY-unsplash.jpg?resize=720%2C471&ssl=1",
-      },
-      {
-        id: 2,
-        name: "Furniture",
-        description: "Furniture for your home and office",
-        imageUrl:
-          "https://www.bostonchefs.com/wp-content/uploads/2019/01/Collage.jpg",
-      },
-      {
-        id: 3,
-        name: "Books",
-        description: "Books across various genres",
-        imageUrl:
-          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRL7kx6NQeMgan-XnJOJgL3HOlqFsnuBIP0XQ&s",
-      },
-      {
-        id: 3,
-        name: "Books",
-        description: "Books across various genres",
-        imageUrl:
-          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRL7kx6NQeMgan-XnJOJgL3HOlqFsnuBIP0XQ&s",
-      },
-      {
-        id: 3,
-        name: "Books",
-        description: "Books across various genres",
-        imageUrl:
-          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRL7kx6NQeMgan-XnJOJgL3HOlqFsnuBIP0XQ&s",
-      },
-      {
-        id: 3,
-        name: "Books",
-        description: "Books across various genres",
-        imageUrl:
-          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRL7kx6NQeMgan-XnJOJgL3HOlqFsnuBIP0XQ&s",
-      },
-      {
-        id: 3,
-        name: "Books",
-        description: "Books across various genres",
-        imageUrl:
-          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRL7kx6NQeMgan-XnJOJgL3HOlqFsnuBIP0XQ&s",
-      },
-      {
-        id: 3,
-        name: "Books",
-        description: "Books across various genres",
-        imageUrl:
-          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRL7kx6NQeMgan-XnJOJgL3HOlqFsnuBIP0XQ&s",
-      },
-      {
-        id: 3,
-        name: "Books",
-        description: "Books across various genres",
-        imageUrl:
-          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRL7kx6NQeMgan-XnJOJgL3HOlqFsnuBIP0XQ&s",
-      },
-    ];
+    const fetchCategories = async () => {
+      try {
+        // Fetch categories from API
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/Category/getall`);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch categories: ${response.statusText}`);
+        }
 
-    // Set static data as the categories state
-    setCategories(staticCategories);
+        const data = await response.json();
+        console.log(data.$values)
+        setCategories(data.$values);
+      } catch (err) {
+        setError((err as Error).message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCategories();
   }, []);
 
   const handleCategoryClick = (category: Category) => {
@@ -94,6 +46,14 @@ const CategoriesPage: React.FC = () => {
       },
     });
   };
+
+  if (loading) {
+    return <div>Loading categories...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   return (
     <div>
