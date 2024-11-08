@@ -24,14 +24,14 @@ public class S3Service
     }
 
     // Upload an image to S3
-    public async Task UploadImageAsync(string key, Stream fileStream)
+    public async Task UploadImageAsync(string key, Stream fileStream, string contentType)
     {
         var request = new PutObjectRequest
         {
             BucketName = _bucketName,
             Key = key,
             InputStream = fileStream,
-            ContentType = "image/jpeg",
+            ContentType = contentType,
             CannedACL = S3CannedACL.PublicRead
         };
 

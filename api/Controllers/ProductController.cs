@@ -32,14 +32,14 @@ namespace api.Controllers
 
 
         [HttpPost("Create")]
-        [Authorize(Roles ="Admin")]
+        // [Authorize(Roles ="Admin")]
         public async Task<IActionResult> createProduct([FromForm] CreateProductDto productDto)
         {
             // Upload the image to S3
             string imageUrl;
             try
             {
-                var imageFile = productDto.Image;
+                IFormFile imageFile = productDto.Image;
                 if (imageFile == null || imageFile.Length == 0)
                 {
                     return BadRequest("Image file is required");
