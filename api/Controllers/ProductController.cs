@@ -19,11 +19,15 @@ namespace api.Controllers
     {
         private readonly IProductRepository _productRepo;
         private readonly IWebHostEnvironment _webHostEnvironment;
+
+        private readonly S3Service _S3service;
         
-        public ProductController(IProductRepository productRepo,IWebHostEnvironment webHostEnvironment)
+        public ProductController(IProductRepository productRepo,IWebHostEnvironment webHostEnvironment, S3Service s3Service)
         {
             _productRepo = productRepo;
             _webHostEnvironment = webHostEnvironment;
+            _S3service = s3Service;
+
         }
 
 
@@ -31,10 +35,32 @@ namespace api.Controllers
         [Authorize(Roles ="Admin")]
         public async Task<IActionResult> createProduct([FromForm] CreateProductDto productDto)
         {
-            string imageUrl = await productDto.Image.UploadProduit(_webHostEnvironment);
-            var product = await _productRepo.createProduct(productDto,imageUrl);
+            // Upload the image to S3
+            string imageUrl;
+            try
+            {
+                var imageFile = productDto.Image;
+                if (imageFile == null || imageFile.Length == 0)
+                {
+                    return BadRequest("Image file is required");
+                }
+
+                string key = $"products/{Guid.NewGuid()}_{imageFile.FileName}";
+                using var fileStream = imageFile.OpenReadStream();
+                await _S3service.UploadImageAsync(key, fileStream, imageFile.ContentType);
+
+                imageUrl = _S3service.GetImageUrl(key);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error uploading image: {ex.Message}");
+            }
+
+            // Save product data
+            var product = await _productRepo.createProduct(productDto, imageUrl);
             return Ok(product.ToProductDto());
         }
+
 
 
         [HttpGet("GetAll")]

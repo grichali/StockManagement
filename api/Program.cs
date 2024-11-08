@@ -116,6 +116,7 @@ builder.Services.AddScoped<ICategoryRepository,CategoryRepository>();
 builder.Services.AddScoped<IProductRepository,ProductRepository>();
 builder.Services.AddScoped<ITokenService,TokenService>();
 builder.Services.AddScoped<IEmailVerificationService,EmailVerificationService>();
+builder.Services.AddScoped<S3Service>();
 
 var app = builder.Build();
 

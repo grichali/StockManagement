@@ -1,9 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "hneU7NnIl+N2ytMmUeiGf5it/PzlVZnVnVv6CaulJsUGh3n3Siuyqg2AGGIHc/cUk9TxdMdqiJ5KXDIobCrC7g==",
+  "dgSpecHash": "pHhw/EAZJDXJEKr2xODfk+PWHN+kTtaUG0dctV1VMT3UrDN+ocQSAM46U3SXqr6uRuLHFYZsTnCgTkLH0OfGDA==",
   "success": true,
   "projectFilePath": "C:\\Users\\ali\\Desktop\\Perso\\All\\MY PROJECTS\\S4\\stockmanagment\\api\\api.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\ali\\.nuget\\packages\\awssdk.core\\3.7.400.46\\awssdk.core.3.7.400.46.nupkg.sha512",
+    "C:\\Users\\ali\\.nuget\\packages\\awssdk.s3\\3.7.405.10\\awssdk.s3.3.7.405.10.nupkg.sha512",
     "C:\\Users\\ali\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\ali\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",
     "C:\\Users\\ali\\.nuget\\packages\\bcrypt.net-next\\4.0.0\\bcrypt.net-next.4.0.0.nupkg.sha512",
@@ -173,10 +175,10 @@
     "C:\\Users\\ali\\.nuget\\packages\\system.xml.readerwriter\\4.3.0\\system.xml.readerwriter.4.3.0.nupkg.sha512",
     "C:\\Users\\ali\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512",
     "C:\\Users\\ali\\.nuget\\packages\\xlparser\\1.5.2\\xlparser.1.5.2.nupkg.sha512",
-    "C:\\Users\\ali\\.nuget\\packages\\microsoft.netcore.app.ref\\8.0.1\\microsoft.netcore.app.ref.8.0.1.nupkg.sha512",
-    "C:\\Users\\ali\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\8.0.1\\microsoft.windowsdesktop.app.ref.8.0.1.nupkg.sha512",
     "C:\\Users\\ali\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\8.0.1\\microsoft.aspnetcore.app.ref.8.0.1.nupkg.sha512",
-    "C:\\Users\\ali\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\8.0.1\\microsoft.netcore.app.host.win-x64.8.0.1.nupkg.sha512"
+    "C:\\Users\\ali\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\8.0.1\\microsoft.netcore.app.host.win-x64.8.0.1.nupkg.sha512",
+    "C:\\Users\\ali\\.nuget\\packages\\microsoft.netcore.app.ref\\8.0.1\\microsoft.netcore.app.ref.8.0.1.nupkg.sha512",
+    "C:\\Users\\ali\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\8.0.1\\microsoft.windowsdesktop.app.ref.8.0.1.nupkg.sha512"
   ],
   "logs": []
 }
