@@ -1,6 +1,50 @@
-import React from "react";
-import signuppage from "../../assets/img/signuppage.svg"
+import React, { useState } from "react";
+import signuppage from "../../assets/img/signuppage.svg";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 const LogIn = () => {
+  interface Login {
+    email: string;
+    password: string;
+  }
+
+  const [user, setUser] = useState<Login>({
+    email: "",
+    password: "",
+  });
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
+  const navigate = useNavigate();
+
+  const handleChange = (e: any) => {
+    const { name, value } = e.target;
+    setUser((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = () => {
+    console.log(user);
+    try {
+      axios
+        .post(`${process.env.REACT_APP_API_URL}/api/User/login`, user, {
+          withCredentials: true,
+        })
+        .then((resp) => {
+          if (resp.status === 200) {
+            console.log(resp.headers);
+            navigate("/user/categories");
+          }
+        });
+    } catch (err) {
+      setError("Signup failed. Please try again.");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <section className="bg-white">
       <div className="grid grid-cols-1 lg:grid-cols-2">
@@ -20,7 +64,13 @@ const LogIn = () => {
               </a>
             </p>
 
-            <form action="#" method="POST" className="mt-8">
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleSubmit();
+              }}
+              className="mt-8"
+            >
               <div className="space-y-5">
                 <div>
                   <label
@@ -33,7 +83,8 @@ const LogIn = () => {
                   <div className="mt-2.5">
                     <input
                       type="email"
-                      name=""
+                      name="email"
+                      onChange={handleChange}
                       id=""
                       placeholder="Enter email to get started"
                       className="block w-full p-4 text-black placeholder-gray-500 transition-all duration-200 border border-gray-200 rounded-md bg-gray-50 focus:outline-none focus:border-blue-600 focus:bg-white caret-blue-600"
@@ -63,7 +114,8 @@ const LogIn = () => {
                   <div className="mt-2.5">
                     <input
                       type="password"
-                      name=""
+                      name="password"
+                      onChange={handleChange}
                       id=""
                       placeholder="Enter your password"
                       className="block w-full p-4 text-black placeholder-gray-500 transition-all duration-200 border border-gray-200 rounded-md bg-gray-50 focus:outline-none focus:border-blue-600 focus:bg-white caret-blue-600"
@@ -122,20 +174,17 @@ const LogIn = () => {
 
         <div className="flex items-center justify-center px-4 py-10 sm:py-16 lg:py-24 bg-gray-50 sm:px-6 lg:px-8">
           <div>
-            <img
-              className="w-full mx-auto"
-              src={signuppage}
-              alt=""
-            />
+            <img className="w-full mx-auto" src={signuppage} alt="" />
 
             <div className="w-full max-w-md mx-auto xl:max-w-xl">
               <h3 className="text-2xl font-bold text-center text-black">
                 Simplify Your Stock Management Today
               </h3>
               <p className="leading-relaxed text-center text-gray-500 mt-2.5">
-              Effective stock management is the backbone of a successful business. With the right tools, you can reduce errors,
-               prevent stockouts, and ensure smooth operations that help you meet customer demand seamlessly.
-
+                Effective stock management is the backbone of a successful
+                business. With the right tools, you can reduce errors, prevent
+                stockouts, and ensure smooth operations that help you meet
+                customer demand seamlessly.
               </p>
 
               <div className="flex items-center justify-center mt-10 space-x-3">
@@ -152,4 +201,4 @@ const LogIn = () => {
     </section>
   );
 };
-export default LogIn
+export default LogIn;

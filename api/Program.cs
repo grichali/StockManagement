@@ -17,11 +17,13 @@ var builder = WebApplication.CreateBuilder(args);
 var allowedOrigins = builder.Configuration["CorsSettings:AllowedOrigins"];
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", builder =>
+    options.AddPolicy("AllowLocalhost", builder =>
     {
-        builder.AllowAnyOrigin()
-               .AllowAnyHeader()
-               .AllowAnyMethod();
+
+        builder.WithOrigins("http://localhost:3000")  // Allow your frontend's origin
+              .AllowAnyMethod()
+              .AllowAnyHeader()
+              .AllowCredentials();  ;
     });
 });
 
@@ -129,7 +131,7 @@ if (app.Environment.IsDevelopment() || '1' == '1')
 app.UseAuthentication();
 
 app.UseAuthorization();
-app.UseCors("AllowAll");
+app.UseCors("AllowLocalhost");
 
 
 

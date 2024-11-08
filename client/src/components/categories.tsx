@@ -1,6 +1,47 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 function Categories() {
+  interface Category {
+    id: number;
+    name: string;
+    description: string;
+    imageUrl: string;
+  }
+
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.REACT_APP_API_URL}/api/Category/getall`
+        );
+        if (!response.ok) {
+          throw new Error(`Failed to fetch categories: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        console.log(data.$values);
+        setCategories(data.$values);
+      } catch (err) {
+        setError((err as Error).message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  if (loading) {
+    return <div>Loading categories...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
   return (
     <div className="bg-gray-100">
       <div className="header bg-white h-16 px-10 py-8 border-b-2 border-gray-200 flex items-center justify-between">
@@ -111,31 +152,34 @@ function Categories() {
                     <div className="font-semibold text-center">Action</div>
                   </th>
                 </tr>
-                <tr>
-                  <td>1</td>
-                  <td>
-                    <img
-                      src="https://images.pexels.com/photos/25652584/pexels-photo-25652584/free-photo-of-elegant-man-wearing-navy-suit.jpeg?auto=compress&cs=tinysrgb&w=400"
-                      className="h-8 w-8 mx-auto"
-                      alt="Category"
-                    />
-                  </td>
-                  <td>Sample Name</td>
-                  <td>Sample Description</td>
-                  <td className="p-2">
-                    <div className="flex justify-center">
-                      <a
-                        href="/"
-                        className="rounded-md hover:bg-green-100 text-green-600 p-2 flex justify-between items-center"
-                      >
-                        Edit
-                      </a>
-                      <button className="rounded-md hover:bg-red-100 text-red-600 p-2 flex justify-between items-center">
-                        Delete
-                      </button>
-                    </div>
-                  </td>
-                </tr>
+
+                {categories.map((category, i) => (
+                  <tr>
+                    <td>{category.id}</td>
+                    <td>
+                      <img
+                        src={category.imageUrl}
+                        className="h-8 w-8 mx-auto"
+                        alt="Category"
+                      />
+                    </td>
+                    <td>{category.name}</td>
+                    <td>{category.description}</td>
+                    <td className="p-2">
+                      <div className="flex justify-center">
+                        <a
+                          href="/"
+                          className="rounded-md hover:bg-green-100 text-green-600 p-2 flex justify-between items-center"
+                        >
+                          Edit
+                        </a>
+                        <button className="rounded-md hover:bg-red-100 text-red-600 p-2 flex justify-between items-center">
+                          Delete
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
               </thead>
             </table>
           </div>
