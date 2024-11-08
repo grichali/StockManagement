@@ -61,7 +61,7 @@ namespace api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var createdOrder = await _orderRepo.CreateOrder(orderDto,user.Id);
+            var createdOrder = await _orderRepo.CreateOrder(orderDto);
             if (createdOrder == null)
             {
                 return BadRequest("Failed to create order");

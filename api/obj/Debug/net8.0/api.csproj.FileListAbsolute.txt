@@ -315,3 +315,10 @@ C:\Users\ali\Desktop\Perso\All\MY PROJECTS\S4\stockmanagment\api\bin\Debug\net8.
 C:\Users\ali\Desktop\Perso\All\MY PROJECTS\S4\stockmanagment\api\bin\Debug\net8.0\SixLabors.Fonts.dll
 C:\Users\ali\Desktop\Perso\All\MY PROJECTS\S4\stockmanagment\api\bin\Debug\net8.0\System.IO.Packaging.dll
 C:\Users\ali\Desktop\Perso\All\MY PROJECTS\S4\stockmanagment\api\bin\Debug\net8.0\XLParser.dll
+E:\HITMAN\tuto\StockManagement\api\bin\Debug\net8.0\ClosedXML.dll
+E:\HITMAN\tuto\StockManagement\api\bin\Debug\net8.0\DocumentFormat.OpenXml.dll
+E:\HITMAN\tuto\StockManagement\api\bin\Debug\net8.0\ExcelNumberFormat.dll
+E:\HITMAN\tuto\StockManagement\api\bin\Debug\net8.0\Irony.dll
+E:\HITMAN\tuto\StockManagement\api\bin\Debug\net8.0\SixLabors.Fonts.dll
+E:\HITMAN\tuto\StockManagement\api\bin\Debug\net8.0\System.IO.Packaging.dll
+E:\HITMAN\tuto\StockManagement\api\bin\Debug\net8.0\XLParser.dll

@@ -19,14 +19,15 @@ const CategoriesPage: React.FC = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        // Fetch categories from API
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/Category/getall`);
+        const response = await fetch(
+          `${process.env.REACT_APP_API_URL}/api/Category/getall`
+        );
         if (!response.ok) {
           throw new Error(`Failed to fetch categories: ${response.statusText}`);
         }
 
         const data = await response.json();
-        console.log(data.$values)
+        console.log(data.$values);
         setCategories(data.$values);
       } catch (err) {
         setError((err as Error).message);

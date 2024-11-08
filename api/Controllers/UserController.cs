@@ -154,13 +154,12 @@ namespace api.Controllers
             var cookieOptions = new CookieOptions
             {
                 HttpOnly = true,
-                Secure = true,
                 IsEssential = true,
                 Expires = DateTime.UtcNow.AddDays(7), 
                 SameSite = SameSiteMode.None
             };
             HttpContext.Response.Cookies.Append("token", token, cookieOptions);
-            return Ok();
+            return Ok(cookieOptions);
         }
     
         [HttpPost("forgot-password")]

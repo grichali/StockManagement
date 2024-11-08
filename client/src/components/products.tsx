@@ -1,12 +1,62 @@
-import React from "react";
-import products from "../data/data";
+import React, { useState, useEffect } from "react";
 
 function Products() {
+  interface Product {
+    id: number;
+    name: string;
+    price: number;
+    quantity: number;
+    imageUrl: string;
+    categoryDto?: CategoryDto | null;
+  }
+
+  interface CategoryDto {
+    id: number;
+    name: string;
+    description: string;
+    imageUrl: string;
+  }
+
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.REACT_APP_API_URL}/api/Product/getall`
+        );
+        if (!response.ok) {
+          throw new Error(`Failed to fetch Products: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        console.log(data.$values);
+        setProducts(data.$values);
+      } catch (err) {
+        setError((err as Error).message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  if (loading) {
+    return <div>Loading categories...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
   return (
     <div className="bg-gray-100">
       <div className="header bg-white h-16 px-10 py-8 border-b-2 border-gray-200 flex items-center justify-between">
         <div className="flex items-center space-x-2 text-gray-400">
-          <span className="text-green-700 tracking-wider font-thin text-md">
+          <span className="text-green-7s00 tracking-wider font-thin text-md">
             <a href="/">Home</a>
           </span>
           <span>/</span>
