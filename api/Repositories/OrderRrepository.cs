@@ -46,10 +46,11 @@ namespace api.Repositories
         }
 
 
-          public async Task<Order?> CreateOrder(CreateOrderDto orderDto,string userId)
+          public async Task<Order?> CreateOrder(CreateOrderDto orderDto)
         {
             var order = new Order{
                 Date = DateTime.Now,
+                
             };
 
             _context.Order.Add(order);

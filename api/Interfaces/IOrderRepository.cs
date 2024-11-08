@@ -12,7 +12,7 @@ namespace api.Interfaces
     {
         Task<List<Order>> GetOrdersAll();
 
-        Task<Order?> CreateOrder(CreateOrderDto orderDto,string userId);
+        Task<Order?> CreateOrder(CreateOrderDto orderDto);
 
         Task<Order?> GetOrderById(int id);
 

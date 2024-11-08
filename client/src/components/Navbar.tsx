@@ -42,7 +42,6 @@ const Navbar: React.FC = () => {
               ))
             )}
 
-            {/* Submit button for checkout */}
             <div className="mt-4">
               <div className="flex justify-between items-center mb-2">
                 <span className="font-bold">Total: </span>

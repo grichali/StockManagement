@@ -1,13 +1,8 @@
-import React from 'react';
-import { useCart } from '../Context/CartContext';
+import React from "react";
+import { useCart } from "../Context/CartContext";
 
 const Cart: React.FC = () => {
-  const { cartItems, addToCart, removeFromCart, calculateTotal, clearCart } = useCart();
-
-  const handleCheckout = () => {
-    console.log("Submitting Order:", cartItems);
-    clearCart(); 
-  };
+  const { cartItems, removeFromCart, calculateTotal, submitOrder } = useCart();
 
   return (
     <div className="cart">
@@ -24,7 +19,7 @@ const Cart: React.FC = () => {
         <span>Total:</span>
         <span>${calculateTotal().toFixed(2)}</span>
       </div>
-      <button onClick={handleCheckout}>Submit Order</button>
+      <button onClick={submitOrder}>Submit Order</button>
     </div>
   );
 };

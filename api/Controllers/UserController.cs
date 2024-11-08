@@ -82,7 +82,7 @@ namespace api.Controllers
                         }
                 }catch(Exception e )
                 {
-                    return StatusCode(500, "Error");
+                    return StatusCode(500, e);
                 }
         }
 
@@ -125,7 +125,7 @@ namespace api.Controllers
                         }
                 }catch(Exception e )
                 {
-                    return StatusCode(500, "Error");
+                    return StatusCode(500, e);
                 }
         }
 
