@@ -322,3 +322,5 @@ E:\HITMAN\tuto\StockManagement\api\bin\Debug\net8.0\Irony.dll
 E:\HITMAN\tuto\StockManagement\api\bin\Debug\net8.0\SixLabors.Fonts.dll
 E:\HITMAN\tuto\StockManagement\api\bin\Debug\net8.0\System.IO.Packaging.dll
 E:\HITMAN\tuto\StockManagement\api\bin\Debug\net8.0\XLParser.dll
+E:\HITMAN\tuto\StockManagement\api\bin\Debug\net8.0\AWSSDK.Core.dll
+E:\HITMAN\tuto\StockManagement\api\bin\Debug\net8.0\AWSSDK.S3.dll
