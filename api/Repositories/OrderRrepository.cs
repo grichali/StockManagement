@@ -17,7 +17,6 @@ namespace api.Repositories
 {
     public class OrderRrepository : IOrderRepository
     {
-
         private readonly ApplicationDbContext _context;
 
         public OrderRrepository(ApplicationDbContext context)
@@ -174,6 +173,26 @@ namespace api.Repositories
             return null;
         }
 
+        public async Task<int> totalOrders()
+        {
+            int totalOrders = await _context.Order.CountAsync();
+            return totalOrders;
+        }
 
+        public async Task<List<string>> TopProducts()
+        {
+            var topProducts = await _context.OrderItems
+                .Include(oi => oi.Product)
+                .GroupBy(i => i.ProductId)
+                .Select(g => new
+                {
+                    ProductName = g.FirstOrDefault().Product.Name,
+                    TotalQuantity = g.Sum(i => i.Quantity)
+                })
+                .OrderByDescending(x => x.TotalQuantity)
+                .Take(5)
+                .Select(x => x.ProductName).ToListAsync();
+            return topProducts;
+        }
     }
 }

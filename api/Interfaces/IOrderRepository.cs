@@ -19,5 +19,8 @@ namespace api.Interfaces
         Task<Order?> Delete(int id);
 
         Task<GlobalStatisticsDto> GetStatistics(DateTime startDate, DateTime endDate);
+        Task<int> totalOrders();
+        // Task<int> TopCategories();
+        Task<List<string>> TopProducts();
     }
 }

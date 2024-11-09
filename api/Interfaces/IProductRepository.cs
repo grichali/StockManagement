@@ -17,5 +17,6 @@ namespace api.Interfaces
         Task<Product?> DeleteProduct(int productId);
 
         Task<List<Product>> getAllProductsByCategorie(int categorieId);
+        Task<int> totalProducts();
     }
 }
