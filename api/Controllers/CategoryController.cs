@@ -29,7 +29,7 @@ namespace api.Controllers
         }
 
         [HttpPost("Create")]
-        [Authorize(Roles ="Admin")]
+        // [Authorize(Roles ="Admin")]
         public async Task<IActionResult> CreateCategory([FromForm] CreateCategoryDto categoryDto)
         {
             if (!ModelState.IsValid || categoryDto == null)

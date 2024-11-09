@@ -31,8 +31,7 @@ public class S3Service
             BucketName = _bucketName,
             Key = key,
             InputStream = fileStream,
-            ContentType = contentType,
-            CannedACL = S3CannedACL.PublicRead
+            ContentType = contentType
         };
 
         await _s3Client.PutObjectAsync(request);
@@ -40,18 +39,25 @@ public class S3Service
 
     public string GetImageUrl(string key)
     {
-        return $"https://{_bucketName}.s3.amazonaws.com/{key}";
-    }
-
-    public async Task<Stream> GetImageAsync(string key)
-    {
-        var request = new GetObjectRequest
+        var request = new GetPreSignedUrlRequest
         {
             BucketName = _bucketName,
-            Key = key
+            Key = key,
+            Expires = DateTime.UtcNow.AddMinutes(10) 
         };
 
-        var response = await _s3Client.GetObjectAsync(request);
-        return response.ResponseStream;
+        return _s3Client.GetPreSignedURL(request);
     }
+
+    // public async Task<Stream> GetImageAsync(string key)
+    // {
+    //     var request = new GetObjectRequest
+    //     {
+    //         BucketName = _bucketName,
+    //         Key = key
+    //     };
+
+    //     var response = await _s3Client.GetObjectAsync(request);
+    //     return response.ResponseStream;
+    // }
 }
