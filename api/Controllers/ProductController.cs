@@ -49,7 +49,7 @@ namespace api.Controllers
                 using var fileStream = imageFile.OpenReadStream();
                 await _S3service.UploadImageAsync(key, fileStream, imageFile.ContentType);
 
-                imageUrl = _S3service.GetImageUrl(key);
+                imageUrl = key;
             }
             catch (Exception ex)
             {

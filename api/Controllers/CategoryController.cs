@@ -50,7 +50,7 @@ namespace api.Controllers
                 string key = $"categories/{Guid.NewGuid()}_{imageFile.FileName}";
                 using var fileStream = imageFile.OpenReadStream();
                 await _S3service.UploadImageAsync(key, fileStream, imageFile.ContentType);
-                imageUrl = _S3service.GetImageUrl(key);
+                imageUrl = key;
 
             }
             catch (Exception ex)
@@ -68,8 +68,16 @@ namespace api.Controllers
         {
             try
             {
-                var categories = await _categoryRepo.GetAllCategories();
-                return Ok(categories.Select(x => x.ToCategoryDto()));
+                List<Category> categories = await _categoryRepo.GetAllCategories();
+                List<CategoryDto> categoryDtos = categories.Select(category =>
+                {
+                    string imageUrl = _S3service.GetImageUrl(category.ImageUrl);
+                    var categoryDto = category.ToCategoryDto();
+                    categoryDto.ImageUrl = imageUrl;
+                    return categoryDto;
+                }).ToList();
+
+                return Ok(categoryDtos);
             }
             catch (Exception ex)
             {

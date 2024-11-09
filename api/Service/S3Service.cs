@@ -49,15 +49,15 @@ public class S3Service
         return _s3Client.GetPreSignedURL(request);
     }
 
-    // public async Task<Stream> GetImageAsync(string key)
-    // {
-    //     var request = new GetObjectRequest
-    //     {
-    //         BucketName = _bucketName,
-    //         Key = key
-    //     };
+        public async Task DeleteImageAsync(string key)
+    {
+        var request = new DeleteObjectRequest
+        {
+            BucketName = _bucketName,
+            Key = key
+        };
 
-    //     var response = await _s3Client.GetObjectAsync(request);
-    //     return response.ResponseStream;
-    // }
+        await _s3Client.DeleteObjectAsync(request);
+    }
+
 }
