@@ -143,8 +143,8 @@ namespace api.Controllers
             
             return Ok("product has been deleted successfully");
         }
-        [HttpGet("/totalproducts")]
-        [Authorize(Roles ="Admin")]
+        [HttpGet("totalproducts")]
+        // [Authorize(Roles ="Admin")]
         public async Task<IActionResult> getTotalProducts(){
             int totalproducts = await _productRepo.totalProducts();
             return Ok(totalproducts);

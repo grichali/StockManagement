@@ -23,5 +23,6 @@ namespace api.Interfaces
         // Task<int> TopCategories();
         Task<List<TopProduct>> TopProducts();
         Task<List<TopCategory>> TopCategories();
+        Task<double> ChiffreAffaire();
     }
 }

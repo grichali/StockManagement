@@ -90,22 +90,28 @@ namespace api.Controllers
 
             return Ok("Order has been deleted successfully");
         }
-        [HttpGet("/totalOrders")]
+        [HttpGet("totalOrders")]
         // [Authorize(Roles ="Admin")]
         public async Task<IActionResult> getTotalOrders(){
             int totalOrders = await _orderRepo.totalOrders();
             return Ok(totalOrders);
         }
-        [HttpGet("/topproducts")]
+        [HttpGet("topproducts")]
         // [Authorize(Roles ="Admin")]
         public async Task<IActionResult> getTopProducts(){
             var topProducts = await _orderRepo.TopProducts();
             return Ok(topProducts);
         }
-        [HttpGet("/topcategories")]
+        [HttpGet("topcategories")]
         // [Authorize(Roles ="Admin")]
         public async Task<IActionResult> getTopCategories(){
             var topcategories = await _orderRepo.TopCategories();
+            return Ok(topcategories);
+        }
+        [HttpGet("chiffreDaffaire")]
+        // [Authorize(Roles ="Admin")]
+        public async Task<IActionResult> getChiffreAffaire(){
+            var topcategories = await _orderRepo.ChiffreAffaire();
             return Ok(topcategories);
         }
 
