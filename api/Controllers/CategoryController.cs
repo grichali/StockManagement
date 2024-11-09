@@ -19,11 +19,15 @@ namespace api.Controllers
     {
         private readonly ICategoryRepository _categoryRepo;
         private readonly IWebHostEnvironment _webHostEnvironment;
-        public CategoryController(ICategoryRepository categoryRepository,IWebHostEnvironment webHostEnvironment)
+
+        private readonly S3Service _S3service;
+        public CategoryController(ICategoryRepository categoryRepository,IWebHostEnvironment webHostEnvironment, S3Service s3Service)
         {
             _categoryRepo = categoryRepository;
             _webHostEnvironment = webHostEnvironment;
+            _S3service = s3Service;
         }
+
         [HttpPost("Create")]
         [Authorize(Roles ="Admin")]
         public async Task<IActionResult> CreateCategory([FromForm] CreateCategoryDto categoryDto)
@@ -33,16 +37,29 @@ namespace api.Controllers
                 return BadRequest("Invalid category data.");
             }
 
+            string imageUrl;
             try
             {
-                string imageUrl = await categoryDto.Image.UploadCategory(_webHostEnvironment);
-                var createdCategory = await _categoryRepo.CreateCategory(categoryDto,imageUrl);
-                return Ok(createdCategory.ToCategoryDto());
+                IFormFile imageFile = categoryDto.Image;
+
+                if(imageFile == null || imageFile.Length == 0)
+                {
+                    return BadRequest("Imagefile is required");
+                }
+
+                string key = $"categories/{Guid.NewGuid()}_{imageFile.FileName}";
+                using var fileStream = imageFile.OpenReadStream();
+                await _S3service.UploadImageAsync(key, fileStream, imageFile.ContentType);
+                imageUrl = _S3service.GetImageUrl(key);
+
             }
             catch (Exception ex)
             {
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
+
+            var category = await _categoryRepo.CreateCategory(categoryDto, imageUrl);
+            return Ok(category.ToCategoryDto());
         }
  
         [HttpGet("getall")]

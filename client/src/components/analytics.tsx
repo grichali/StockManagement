@@ -33,8 +33,8 @@ const Analytics = () => {
   const categories = topcategoriessell.map((item) => item.category);
   const xx = topcategoriessell.map((item) => item.orders);
 
-  const [totalProducts, setTotalProducts] = useState<Number>();
-  const [totalOrders, setTotalOrders] = useState<Number>();
+  // const [totalProducts, setTotalProducts] = useState<Number>();
+  // const [totalOrders, setTotalOrders] = useState<Number>();
 
   const chartData = {
     labels: categories,

@@ -49,12 +49,6 @@ namespace api.Controllers
         // [Authorize(Roles = "Admin, User")]
         public async Task<IActionResult> CreateOrder([FromBody] CreateOrderDto orderDto)
         {
-            string username = User.GetUsername();
-            User? user = await _userManager.FindByNameAsync(username);
-            if(user == null)
-            {
-                return BadRequest("User Not Found");
-            }
 
             if (!ModelState.IsValid)
             {
