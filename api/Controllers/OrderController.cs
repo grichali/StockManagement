@@ -96,6 +96,19 @@ namespace api.Controllers
 
             return Ok("Order has been deleted successfully");
         }
+        [HttpGet("/totalOrders")]
+        [Authorize(Roles ="Admin")]
+        public async Task<IActionResult> getTotalOrders(){
+            int totalOrders = await _orderRepo.totalOrders();
+            return Ok(totalOrders);
+        }
+        [HttpGet("/topproducts")]
+        // [Authorize(Roles ="Admin")]
+        public async Task<IActionResult> getTopProducts(){
+            var topProducts = await _orderRepo.TopProducts();
+            return Ok(topProducts);
+        }
+
     }
 }
  

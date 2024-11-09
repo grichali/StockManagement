@@ -93,5 +93,11 @@ namespace api.Repositories
             var products = await _context.Product.Where(x => x.CategoryId == categorieId && x.Quantity >= 1).ToListAsync();
             return products;
         }
+
+        public async Task<int> totalProducts()
+        {
+            int totalProducts = await _context.Product.CountAsync();
+            return totalProducts;
+        }
     }
 } 
