@@ -179,7 +179,7 @@ namespace api.Repositories
             return totalOrders;
         }
 
-        public async Task<List<string>> TopProducts()
+        public async Task<List<TopProduct>> TopProducts()
         {
             var topProducts = await _context.OrderItems
                 .Include(oi => oi.Product)
@@ -191,8 +191,24 @@ namespace api.Repositories
                 })
                 .OrderByDescending(x => x.TotalQuantity)
                 .Take(5)
-                .Select(x => x.ProductName).ToListAsync();
+                .Select(x => new TopProduct { 
+                    productName = x.ProductName,
+                    TotalQuantity = x.TotalQuantity
+                }).ToListAsync();
             return topProducts;
+        }
+
+        public async Task<List<TopCategory>> TopCategories()
+        {
+            var topcategories = await _context.OrderItems.Include(o => o.Product).ThenInclude(i => i.Category).GroupBy(i => i.Product.CategoryId).Select(g => new
+            {
+                categoryName = g.FirstOrDefault().Product.Category.Name,
+                totalQuantity = g.Sum(i => i.Quantity)
+            }).OrderByDescending(x => x.totalQuantity).Take(5).Select(x => new TopCategory {
+                categoryName = x.categoryName,
+                totalQuantity = x.totalQuantity
+            }).ToListAsync();
+            return topcategories;
         }
     }
 }

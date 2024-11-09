@@ -63,7 +63,7 @@ namespace api.Controllers
         [HttpGet("GetAll")]
         // [Authorize(Roles ="Admin")]
         public async Task<IActionResult> getAllProduct(){
-            var products = await _productRepo.getAllProducts();
+            List<Product> products = await _productRepo.getAllProducts();
             return Ok(products.Select(x=> x.ToProductDto()));
         }
 
