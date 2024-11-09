@@ -45,11 +45,9 @@ namespace api.Controllers
                     return BadRequest("Image file is required");
                 }
 
-                string key = $"products/{Guid.NewGuid()}_{imageFile.FileName}";
-                using var fileStream = imageFile.OpenReadStream();
-                await _S3service.UploadImageAsync(key, fileStream, imageFile.ContentType);
+                imageUrl = await _S3service.UploadImageAsync(imageFile, "products");
 
-                imageUrl = key;
+                
             }
             catch (Exception ex)
             {
@@ -64,7 +62,7 @@ namespace api.Controllers
 
 
         [HttpGet("GetAll")]
-        [Authorize(Roles ="Admin")]
+        // [Authorize(Roles ="Admin")]
         public async Task<IActionResult> getAllProduct(){
             var products = await _productRepo.getAllProducts();
             return Ok(products.Select(x=> x.ToProductDto()));

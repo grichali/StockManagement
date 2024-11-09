@@ -105,7 +105,7 @@ namespace api.Controllers
         }
 
         [HttpPut("updateimage/{id}")]
-        [Authorize(Roles ="Admin")]
+        // [Authorize(Roles ="Admin")]
         public async Task<IActionResult> UpdateCategoryImage([FromRoute]int id, IFormFile imageFile)
         {
             try
@@ -130,7 +130,7 @@ namespace api.Controllers
 
             Category category1 = await _categoryRepo.UpdateCategoryImage(id, key);
             
-            return Ok(category1);
+            return Ok(category1.ToCategoryDto());
             }catch(Exception e)
             {
                 return BadRequest("Error occured during updating category image"+ e);
