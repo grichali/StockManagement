@@ -67,7 +67,7 @@ namespace api.Controllers
                 List<CategoryDto> categoryDtos = categories.Select(category =>
                 {
                     string imageUrl = _S3service.GetImageUrl(category.ImageUrl);
-                    var categoryDto = category.ToCategoryDto();
+                    CategoryDto categoryDto = category.ToCategoryDto();
                     categoryDto.ImageUrl = imageUrl;
                     return categoryDto;
                 }).ToList();
@@ -105,7 +105,7 @@ namespace api.Controllers
         }
 
         [HttpPut("updateimage/{id}")]
-        [Authorize(Roles ="Admin")]
+        // [Authorize(Roles ="Admin")]
         public async Task<IActionResult> UpdateCategoryImage([FromRoute]int id, IFormFile imageFile)
         {
             try
@@ -128,9 +128,13 @@ namespace api.Controllers
 
             string key = await _S3service.UploadImageAsync(imageFile,"categories");
 
-            Category category1 = await _categoryRepo.UpdateCategoryImage(id, key);
-            
-            return Ok(category1);
+            Category? category1 = await _categoryRepo.UpdateCategoryImage(id, key);
+            if(category1== null)
+            {
+                return NotFound("Category not found");
+            }
+            category1.ImageUrl = _S3service.GetImageUrl(category1.ImageUrl);
+            return Ok(category1.ToCategoryDto());
             }catch(Exception e)
             {
                 return BadRequest("Error occured during updating category image"+ e);

@@ -99,5 +99,28 @@ namespace api.Repositories
             int totalProducts = await _context.Product.CountAsync();
             return totalProducts;
         }
+
+        public async Task<Product> updateProductImage(int id, string imageUrl)
+        {
+            Product? product = await _context.Product.FindAsync(id);
+
+            if (product == null)
+            {
+                throw new Exception("Product not found");
+            }
+
+            product.ImageUrl = imageUrl;
+
+            await _context.SaveChangesAsync();
+
+            return product;
+        }
+
+        public async Task<Product?> getProductById(int id)
+        {
+            Product? product = await _context.Product.FindAsync(id);
+
+            return product;
+        }
     }
 } 
