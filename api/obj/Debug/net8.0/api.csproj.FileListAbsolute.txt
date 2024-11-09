@@ -322,5 +322,10 @@ E:\HITMAN\tuto\StockManagement\api\bin\Debug\net8.0\Irony.dll
 E:\HITMAN\tuto\StockManagement\api\bin\Debug\net8.0\SixLabors.Fonts.dll
 E:\HITMAN\tuto\StockManagement\api\bin\Debug\net8.0\System.IO.Packaging.dll
 E:\HITMAN\tuto\StockManagement\api\bin\Debug\net8.0\XLParser.dll
+<<<<<<< HEAD
 E:\HITMAN\tuto\StockManagement\api\bin\Debug\net8.0\AWSSDK.Core.dll
 E:\HITMAN\tuto\StockManagement\api\bin\Debug\net8.0\AWSSDK.S3.dll
+=======
+C:\Users\ali\Desktop\Perso\All\MY PROJECTS\S4\stockmanagment\api\bin\Debug\net8.0\AWSSDK.Core.dll
+C:\Users\ali\Desktop\Perso\All\MY PROJECTS\S4\stockmanagment\api\bin\Debug\net8.0\AWSSDK.S3.dll
+>>>>>>> 805f28730c63e1013e07a6b75191e6f4fee293d2

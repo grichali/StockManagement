@@ -11,8 +11,5 @@ namespace api.Dtos.Category
 
         public string  Description { get; set; }    = string.Empty;  
 
-        public string ImageUrl { get; set; }  = string.Empty;  
-
-        
     }
 }

@@ -24,34 +24,55 @@ public class S3Service
     }
 
     // Upload an image to S3
-    public async Task UploadImageAsync(string key, Stream fileStream, string contentType)
+    public async Task<string> UploadImageAsync(IFormFile imageFile, string prefix)
     {
-        var request = new PutObjectRequest
+        try
         {
-            BucketName = _bucketName,
-            Key = key,
-            InputStream = fileStream,
-            ContentType = contentType,
-            CannedACL = S3CannedACL.PublicRead
-        };
+            string key = $"{prefix}/{Guid.NewGuid()}_{imageFile.FileName}";
+            using var fileStream = imageFile.OpenReadStream();
 
-        await _s3Client.PutObjectAsync(request);
+            var request = new PutObjectRequest
+            {
+                BucketName = _bucketName,
+                Key = key,
+                InputStream = fileStream,
+                ContentType = imageFile.ContentType
+            };
+
+            await _s3Client.PutObjectAsync(request);
+            return key;
+        }
+        catch (AmazonS3Exception ex)
+        {
+            throw new Exception($"AWS S3 error: {ex.Message}");
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Error uploading file: {ex.Message}");
+        }
     }
 
     public string GetImageUrl(string key)
     {
-        return $"https://{_bucketName}.s3.amazonaws.com/{key}";
+        var request = new GetPreSignedUrlRequest
+        {
+            BucketName = _bucketName,
+            Key = key,
+            Expires = DateTime.UtcNow.AddMinutes(10) 
+        };
+
+        return _s3Client.GetPreSignedURL(request);
     }
 
-    public async Task<Stream> GetImageAsync(string key)
+        public async Task DeleteImageAsync(string key)
     {
-        var request = new GetObjectRequest
+        var request = new DeleteObjectRequest
         {
             BucketName = _bucketName,
             Key = key
         };
-
-        var response = await _s3Client.GetObjectAsync(request);
-        return response.ResponseStream;
+     await _s3Client.DeleteObjectAsync(request);
     }
+   
+
 }
