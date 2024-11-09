@@ -57,6 +57,20 @@ namespace api.Repositories
                 
             return category;
         }
+        public async Task<Category?> UpdateCategoryImage(int id, string key)
+        {
+            var category = await _context.Category.FindAsync(id);
+            if (category == null)
+            {
+                throw new Exception("Category not found");
+            }
+
+            category.ImageUrl = key;
+
+            await _context.SaveChangesAsync();
+                
+            return category;
+        }
 
        public async Task<bool> DeleteCategory(int id)
         {
@@ -87,5 +101,11 @@ namespace api.Repositories
             return false;
         }
 
+        public async Task<Category?> GetCategorybyId(int id)
+        {
+            Category? category = await _context.Category.FindAsync(id);
+
+            return category;
+        }
     }
 }

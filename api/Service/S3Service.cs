@@ -24,17 +24,32 @@ public class S3Service
     }
 
     // Upload an image to S3
-    public async Task UploadImageAsync(string key, Stream fileStream, string contentType)
+    public async Task<string> UploadImageAsync(IFormFile imageFile, string prefix)
     {
-        var request = new PutObjectRequest
+        try
         {
-            BucketName = _bucketName,
-            Key = key,
-            InputStream = fileStream,
-            ContentType = contentType
-        };
+            string key = $"{prefix}/{Guid.NewGuid()}_{imageFile.FileName}";
+            using var fileStream = imageFile.OpenReadStream();
 
-        await _s3Client.PutObjectAsync(request);
+            var request = new PutObjectRequest
+            {
+                BucketName = _bucketName,
+                Key = key,
+                InputStream = fileStream,
+                ContentType = imageFile.ContentType
+            };
+
+            await _s3Client.PutObjectAsync(request);
+            return key;
+        }
+        catch (AmazonS3Exception ex)
+        {
+            throw new Exception($"AWS S3 error: {ex.Message}");
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Error uploading file: {ex.Message}");
+        }
     }
 
     public string GetImageUrl(string key)
@@ -56,8 +71,8 @@ public class S3Service
             BucketName = _bucketName,
             Key = key
         };
-
-        await _s3Client.DeleteObjectAsync(request);
+     await _s3Client.DeleteObjectAsync(request);
     }
+   
 
 }

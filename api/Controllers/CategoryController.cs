@@ -46,12 +46,7 @@ namespace api.Controllers
                 {
                     return BadRequest("Imagefile is required");
                 }
-
-                string key = $"categories/{Guid.NewGuid()}_{imageFile.FileName}";
-                using var fileStream = imageFile.OpenReadStream();
-                await _S3service.UploadImageAsync(key, fileStream, imageFile.ContentType);
-                imageUrl = key;
-
+                imageUrl = await _S3service.UploadImageAsync(imageFile, "categories");
             }
             catch (Exception ex)
             {
@@ -95,7 +90,7 @@ namespace api.Controllers
             }
 
             try
-            {
+            {    
                 var updatedCategory = await _categoryRepo.UpdateCategory(id, categoryDto);
                 if (updatedCategory == null)
                 {
@@ -109,17 +104,63 @@ namespace api.Controllers
             }
         }
 
-        [HttpDelete("delete/{id}")]
-         [Authorize(Roles ="Admin")]
-        public async Task<IActionResult> DeleteCategory(int id )
+        [HttpPut("updateimage/{id}")]
+        [Authorize(Roles ="Admin")]
+        public async Task<IActionResult> UpdateCategoryImage([FromRoute]int id, IFormFile imageFile)
         {
-            bool category = await _categoryRepo.DeleteCategory(id);
-            if(category == true)
+            try
             {
-                return Ok("Category has been deleted");
+            if(imageFile == null || imageFile.Length == 0)
+            {
+                return BadRequest("Imagefile is required");
             }
 
-            return NotFound("Category Not Found");
+            Category? category = await _categoryRepo.GetCategorybyId(id);
+            if(category == null)
+            {
+                return NotFound("Category Not Found");
+            }
+            await _S3service.DeleteImageAsync(category.ImageUrl);
+            if(imageFile == null || imageFile.Length == 0)
+            {
+                return BadRequest("Imagefile is required");
+            }
+
+            string key = await _S3service.UploadImageAsync(imageFile,"categories");
+
+            Category category1 = await _categoryRepo.UpdateCategoryImage(id, key);
+            
+            return Ok(category1);
+            }catch(Exception e)
+            {
+                return BadRequest("Error occured during updating category image"+ e);
+            }
+        }  
+
+        [HttpDelete("delete/{id}")]
+        [Authorize(Roles ="Admin")]
+        public async Task<IActionResult> DeleteCategory([FromRoute]int id )
+        {
+            try
+            {
+                Category? X = await _categoryRepo.GetCategorybyId(id);
+                if(X == null)
+                {
+                    return NotFound("Category Not Found");
+                }
+                await _S3service.DeleteImageAsync(X.ImageUrl);
+                bool category = await _categoryRepo.DeleteCategory(id);
+                if(category == true)
+                {
+                    return Ok("Category has been deleted");
+                }
+
+                return NotFound("Category Not Found");
+            }
+            catch(Exception e)
+            {
+                return BadRequest("Error occured during deleting category"+ e);
+            };
 
         }
     }
