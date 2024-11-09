@@ -64,7 +64,13 @@ namespace api.Controllers
         // [Authorize(Roles ="Admin")]
         public async Task<IActionResult> getAllProduct(){
             List<Product> products = await _productRepo.getAllProducts();
-            return Ok(products.Select(x=> x.ToProductDto()));
+             List<ProductDto> productDtos = products.Select(product => {
+                string ImageUrl = _S3service.GetImageUrl(product.ImageUrl);
+                ProductDto productDto = product.ToProductDto();
+                productDto.ImageUrl = ImageUrl;
+                return productDto;
+            }).ToList();
+            return Ok(productDtos);
         }
 
         [HttpGet("getproductbycategorie/{id}")]
