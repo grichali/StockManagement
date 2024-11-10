@@ -54,6 +54,7 @@ namespace api.Controllers
             }
 
             var category = await _categoryRepo.CreateCategory(categoryDto, imageUrl);
+            category.ImageUrl = _S3service.GetImageUrl(category.ImageUrl);
             return Ok(category.ToCategoryDto());
         }
  

@@ -55,6 +55,7 @@ namespace api.Controllers
                 return StatusCode(500, $"Error uploading image: {ex.Message}");
             }
             var product = await _productRepo.createProduct(productDto, imageUrl);
+            product.ImageUrl = _S3service.GetImageUrl(product.ImageUrl);
             return Ok(product.ToProductDto());
         }
 
@@ -95,7 +96,7 @@ namespace api.Controllers
         }
 
         [HttpPut("updateproductimage/{id}")]
-        [Authorize(Roles ="Admin")]
+        // [Authorize(Roles ="Admin")]
         public async Task<IActionResult> updateProductImage([FromRoute] int id , IFormFile imageFile)
         {
             try
@@ -129,7 +130,7 @@ namespace api.Controllers
 
 
         [HttpDelete("delete/")]
-        [Authorize(Roles ="Admin")]
+        // [Authorize(Roles ="Admin")]
         public async Task<IActionResult> deleteProduct(int id)
         {
             Product? prod = await _productRepo.getProductById(id);
