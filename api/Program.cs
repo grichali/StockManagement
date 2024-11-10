@@ -20,7 +20,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowLocalhost", builder =>
     {
 
-        builder.WithOrigins("http://localhost:3000")  // Allow your frontend's origin
+        builder.WithOrigins("http://localhost:3000")  
               .AllowAnyMethod()
               .AllowAnyHeader()
               .AllowCredentials();  ;
@@ -30,7 +30,8 @@ builder.Services.AddCors(options =>
 builder.Services.AddControllers();
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
-    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+    options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+    options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
 });
 
 builder.Services.AddEndpointsApiExplorer();

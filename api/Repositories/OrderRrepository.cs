@@ -181,7 +181,7 @@ namespace api.Repositories
 
         public async Task<List<TopProduct>> TopProducts()
         {
-            var topProducts = await _context.OrderItems
+            List<TopProduct> topProducts = await _context.OrderItems
                 .Include(oi => oi.Product)
                 .GroupBy(i => i.ProductId)
                 .Select(g => new
@@ -209,6 +209,12 @@ namespace api.Repositories
                 totalQuantity = x.totalQuantity
             }).ToListAsync();
             return topcategories;
+        }
+
+        public async Task<double> ChiffreAffaire()
+        {
+            double chiffreAffaire = await _context.Order.SumAsync(i => i.amount);
+            return chiffreAffaire;
         }
     }
 }

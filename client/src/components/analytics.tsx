@@ -1,27 +1,32 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import orders from "../assets/img/orders.svg";
 import profite from "../assets/img/profite.svg";
 import products from "../assets/img/products.svg";
 import { Bar, Doughnut, Line } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
+import axios from "axios";
 Chart.register(...registerables);
 const Analytics = () => {
-  const totalOrders = 120;
-  const totalProfit = 5000;
-  const totalProducts = 200;
-  const chiffreDAffaire = 15000;
+  interface TopProduct {
+    productName: String;
+    totalQuantity: number;
+  }
+  // const totalOrders = 120;
+  const totalProfit = 150;
+  // const totalProducts = 200;
+  // const chiffreDAffaire = 15000;
   const topcategoriessell = [
     { category: "Electronics", orders: 30 },
     { category: "Books", orders: 20 },
     { category: "Clothing", orders: 50 },
   ];
-  const topSellingProducts = [
-    { product: "Smartphone", sales: 150 },
-    { product: "Laptop", sales: 100 },
-    { product: "Headphones", sales: 75 },
-    { product: "Tablet", sales: 50 },
-    { product: "Smartwatch", sales: 25 },
-  ];
+  // const topSellingProducts = [
+  //   { product: "Smartphone", sales: 150 },
+  //   { product: "Laptop", sales: 100 },
+  //   { product: "Headphones", sales: 75 },
+  //   { product: "Tablet", sales: 50 },
+  //   { product: "Smartwatch", sales: 25 },
+  // ];
 
   const inventoryLevels = [
     { product: "Smartphone", stock: 30 },
@@ -33,8 +38,82 @@ const Analytics = () => {
   const categories = topcategoriessell.map((item) => item.category);
   const xx = topcategoriessell.map((item) => item.orders);
 
-  // const [totalProducts, setTotalProducts] = useState<Number>();
-  // const [totalOrders, setTotalOrders] = useState<Number>();
+  const [totalProducts, setTotalProducts] = useState<number>();
+  const [totalOrders, setTotalOrders] = useState<number>(0);
+  const [chiffreAffaire, setChiffreAffaire] = useState<number>(0);
+  const [topSellingProducts, setTopSellingProducts] = useState<TopProduct[]>(
+    []
+  );
+
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchTotalOrders = async () => {
+      try {
+        await axios
+          .get(`${process.env.REACT_APP_API_URL}/api/Order/totalOrders`)
+          .then((resp) => {
+            setTotalOrders(resp.data);
+          });
+      } catch (err) {
+        setError((err as Error).message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    const fetchTotalProducts = async () => {
+      try {
+        await axios
+          .get(`${process.env.REACT_APP_API_URL}/api/Product/totalProducts`)
+          .then((resp) => {
+            setTotalProducts(resp.data);
+          });
+      } catch (err) {
+        setError((err as Error).message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    const fetchChiffreAffaire = async () => {
+      try {
+        await axios
+          .get(`${process.env.REACT_APP_API_URL}/api/Order/chiffreDaffaire`)
+          .then((resp) => {
+            setChiffreAffaire(resp.data);
+          });
+      } catch (err) {
+        setError((err as Error).message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    const fetchTopProducts = async () => {
+      try {
+        await axios
+          .get(`${process.env.REACT_APP_API_URL}/api/Order/topproducts`)
+          .then((resp) => {
+            console.log(resp.data);
+            setTopSellingProducts(resp.data);
+          });
+      } catch (err) {
+        setError((err as Error).message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchTopProducts();
+    fetchChiffreAffaire();
+    fetchTotalOrders();
+    fetchTotalProducts();
+  }, []);
+  if (loading) {
+    return <div>Loading categories...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   const chartData = {
     labels: categories,
@@ -49,11 +128,11 @@ const Analytics = () => {
   };
 
   const doughnutChartData = {
-    labels: topSellingProducts.map((item) => item.product),
+    labels: topSellingProducts.map((item) => item.productName),
     datasets: [
       {
         label: "Top Selling Products",
-        data: topSellingProducts.map((item) => item.sales),
+        data: topSellingProducts.map((item) => item.totalQuantity),
         backgroundColor: [
           "#FF6384",
           "#36A2EB",
@@ -101,7 +180,7 @@ const Analytics = () => {
     datasets: [
       {
         label: "Monthly Profit",
-        data: [400, 450, 500, 600, 700, 800, 750, 900, 1000, 1100, 1200, 1300], // Sample data
+        data: [400, 450, 500, 600, 700, 800, 750, 900, 1000, 1100, 1200, 1300],
         fill: false,
         backgroundColor: "rgba(75, 192, 192, 1)",
         borderColor: "rgba(75, 192, 192, 1)",
@@ -167,7 +246,7 @@ const Analytics = () => {
             className="w-11 h-11 mr-2 rounded-full"
           />
           <div className="flex flex-col items-start">
-            <p className="text-2xl font-bold">${chiffreDAffaire}</p>
+            <p className="text-2xl font-bold">${chiffreAffaire}</p>
             <h3 className="text-lg font-semibold">Chiffre d'Affaire</h3>
           </div>
         </div>
