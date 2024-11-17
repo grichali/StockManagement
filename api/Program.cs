@@ -17,10 +17,10 @@ var builder = WebApplication.CreateBuilder(args);
 var allowedOrigins = builder.Configuration["CorsSettings:AllowedOrigins"];
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowLocalhost", builder =>
+    options.AddPolicy("AllowAny", builder =>
     {
 
-        builder.WithOrigins("http://localhost:3000")  
+        builder.WithOrigins("*")  
               .AllowAnyMethod()
               .AllowAnyHeader()
               .AllowCredentials();  ;
@@ -38,6 +38,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpClient();
 
+
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(8080);
+});
 
 builder.Services.AddSwaggerGen(option =>
 {
@@ -123,7 +128,7 @@ builder.Services.AddScoped<S3Service>();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment() || '1' == '1')
+if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
@@ -132,7 +137,7 @@ if (app.Environment.IsDevelopment() || '1' == '1')
 app.UseAuthentication();
 
 app.UseAuthorization();
-app.UseCors("AllowLocalhost");
+app.UseCors("AllowAny");
 
 
 
