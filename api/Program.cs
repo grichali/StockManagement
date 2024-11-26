@@ -134,7 +134,22 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseCors("AllowLocalhost");
 
+app.UseExceptionHandler(errorApp =>
+{
+    errorApp.Run(async context =>
+    {
+        context.Response.ContentType = "application/json";
+        var exception = context.Features.Get<IExceptionHandlerFeature>()?.Error;
 
+        var errorResponse = new ErrorResponse
+        {
+            Message = exception?.Message,
+            StackTrace = exception?.StackTrace
+        };
+
+        await context.Response.WriteAsJsonAsync(errorResponse);
+    });
+});
 
 
 app.MapControllers();
